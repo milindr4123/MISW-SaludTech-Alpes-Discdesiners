@@ -4,7 +4,6 @@ from tokenizacion.seedwork.aplicacion.dto import DTO
 @dataclass(frozen=True)
 class FechaTokenDTO(DTO):
     fecha_creacion: str
-    fecha_expiracion: str
 
 @dataclass(frozen=True)
 class TokenDTO(DTO):

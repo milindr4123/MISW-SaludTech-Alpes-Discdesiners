@@ -28,15 +28,15 @@ class EstadoToken(Enum):
     ACCESO = "Activo"
     REFRESCO = "Retirado"
     
-class IdUsuarioToken(ObjetoValor):
-    id_usuario:str
+class IdPaciente(ObjetoValor):
+    id_paciente:str
 
 @dataclass(frozen=True)
 class Token(ObjetoValor):
     texto: TextoToken
     tipo: TipoToken
     estado: EstadoToken
-    id_usuario: IdUsuarioToken
+    id_paciente: IdPaciente
 
     def obtener_tipo(self) -> TipoToken:
         return self.tipo
@@ -45,11 +45,11 @@ class Token(ObjetoValor):
 @dataclass(frozen=True)
 class DetalleToken(ObjetoValor):
     id: str
-    fecha_creacion: datetime
-    fecha_expiracion: datetime
+    fecha_creacion: FechaToken
+    fecha_expiracion: FechaToken
     tipo: TipoToken
-    estado: str
-    id_paciente: str
-    token_anonimo: str
-    fecha_revocacion: datetime
-    fecha_creacion: datetime
+    estado: EstadoToken
+    id_paciente: IdPaciente
+    token_anonimo: TextoToken
+    fecha_revocacion: FechaToken
+    fecha_creacion: FechaToken

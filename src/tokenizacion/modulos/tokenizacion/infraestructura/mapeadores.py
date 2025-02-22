@@ -45,8 +45,6 @@ class MapeadorDetalle(Mapeador):
     def dto_a_entidad(self, dto: DetalleTokenDTO) -> DetalleToken:
         detalle = DetalleToken(
             id=dto.id,
-            fecha_creacion=dto.fecha_creacion,
-            fecha_expiracion=dto.fecha_expiracion,
             tipo=dto.tipo,
             estado=dto.estado,
             id_paciente=dto.id_paciente,

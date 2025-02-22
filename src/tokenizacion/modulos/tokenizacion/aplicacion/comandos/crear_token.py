@@ -2,7 +2,7 @@ from tokenizacion.seedwork.aplicacion.comandos import Comando
 from tokenizacion.modulos.tokenizacion.aplicacion.dto import TokenDTO
 from .base import CrearTokenBaseHandler
 from dataclasses import dataclass, field
-from tokenizacion.seedwork.aplicacion.comandos import ejecutar_comando as comando
+from tokenizacion.seedwork.aplicacion.comandos import ejecutar_commando as comando
 
 from tokenizacion.modulos.tokenizacion.dominio.entidades import Token
 from tokenizacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto

@@ -9,7 +9,7 @@ from flask import Response
 from tokenizacion.modulos.tokenizacion.aplicacion.mapeadores import MapeadorTokenDTOJson
 from tokenizacion.modulos.tokenizacion.aplicacion.comandos.crear_token import CrearToken
 from tokenizacion.modulos.tokenizacion.aplicacion.queries.obtener_token import ObtenerToken
-from tokenizacion.seedwork.aplicacion.comandos import ejecutar_comando
+from tokenizacion.seedwork.aplicacion.comandos import ejecutar_commando
 from tokenizacion.seedwork.aplicacion.queries import ejecutar_query
 
 bp = api.crear_blueprint('tokenizacion', '/tokenizacion')
@@ -41,7 +41,7 @@ def crear_token_asincrona():
         
         # TODO Reemplaze este código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura
-        ejecutar_comando(comando)
+        ejecutar_commando(comando)
         
         return Response('{}', status=202, mimetype='application/json')
     except ExcepcionDominio as e:

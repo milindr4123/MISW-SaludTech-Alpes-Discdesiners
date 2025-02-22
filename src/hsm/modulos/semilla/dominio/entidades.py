@@ -10,8 +10,8 @@ import hsm.modulos.hsm.dominio.objetos_valor as ov
 from aeroalpes.seedwork.dominio.entidades import Entidad
 
 @dataclass
-class GeneradorSeed(Entidad):
+class Semilla(Entidad):
     """Representa un generador de semillas con parámetros específicos en el dominio de vuelos."""
-    operation: ov.Operacion = field(default_factory=lambda: ov.Operacion("generate_seed"))
+   
     length: ov.Longitud = field(default_factory=lambda: ov.Longitud(32))
     format: ov.Formato = field(default_factory=lambda: ov.Formato("hex"))

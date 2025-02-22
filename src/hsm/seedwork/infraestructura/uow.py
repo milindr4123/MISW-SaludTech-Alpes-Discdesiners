@@ -1,10 +1,12 @@
 from abc import ABC, abstractmethod
 from enum import Enum
 
-from aeroalpes.seedwork.dominio.entidades import AgregacionRaiz
+from hsm.seedwork.dominio.entidades import AgregacionRaiz
 from pydispatch import dispatcher
 
 import pickle
+import logging
+import traceback
 
 
 class Lock(Enum):
@@ -26,13 +28,25 @@ class UnidadTrabajo(ABC):
     def __exit__(self, *args):
         self.rollback()
 
-    def _obtener_eventos(self, batches=None):
+    def _obtener_eventos_rollback(self, batches=None):
         batches = self.batches if batches is None else batches
+        eventos = list()
         for batch in batches:
             for arg in batch.args:
                 if isinstance(arg, AgregacionRaiz):
-                    return arg.eventos
-        return list()
+                    eventos += arg.eventos_compensacion
+                    break
+        return eventos
+
+    def _obtener_eventos(self, batches=None):
+        batches = self.batches if batches is None else batches
+        eventos = list()
+        for batch in batches:
+            for arg in batch.args:
+                if isinstance(arg, AgregacionRaiz):
+                    eventos += arg.eventos
+                    break
+        return eventos
 
     @abstractmethod
     def _limpiar_batches(self):
@@ -58,18 +72,25 @@ class UnidadTrabajo(ABC):
     def savepoint(self):
         raise NotImplementedError
 
-    def registrar_batch(self, operacion, *args, lock=Lock.PESIMISTA, **kwargs):
+    def registrar_batch(self, operacion, *args, lock=Lock.PESIMISTA, repositorio_eventos_func=None,**kwargs):
         batch = Batch(operacion, lock, *args, **kwargs)
         self.batches.append(batch)
-        self._publicar_eventos_dominio(batch)
+        self._publicar_eventos_dominio(batch, repositorio_eventos_func)
 
-    def _publicar_eventos_dominio(self, batch):
+    def _publicar_eventos_dominio(self, batch, repositorio_eventos_func):
         for evento in self._obtener_eventos(batches=[batch]):
+            if repositorio_eventos_func:
+                repositorio_eventos_func(evento)
             dispatcher.send(signal=f'{type(evento).__name__}Dominio', evento=evento)
 
     def _publicar_eventos_post_commit(self):
-        for evento in self._obtener_eventos():
-            dispatcher.send(signal=f'{type(evento).__name__}Integracion', evento=evento)
+        try:
+            for evento in self._obtener_eventos():
+                dispatcher.send(signal=f'{type(evento).__name__}Integracion', evento=evento)
+        except:
+            logging.error('ERROR: Suscribiendose al tópico de eventos!')
+            traceback.print_exc()
+            
 
 def is_flask():
     try:
@@ -79,7 +100,7 @@ def is_flask():
         return False
 
 def registrar_unidad_de_trabajo(serialized_obj):
-    from aeroalpes.config.uow import UnidadTrabajoSQLAlchemy
+    from hsm.config.uow import UnidadTrabajoSQLAlchemy
     from flask import session
     
 
@@ -87,13 +108,16 @@ def registrar_unidad_de_trabajo(serialized_obj):
 
 def flask_uow():
     from flask import session
-    from aeroalpes.config.uow import UnidadTrabajoSQLAlchemy
+    from hsm.config.uow import UnidadTrabajoSQLAlchemy, UnidadTrabajoPulsar
     if session.get('uow'):
         return session['uow']
-    else:
-        uow_serialized = pickle.dumps(UnidadTrabajoSQLAlchemy())
-        registrar_unidad_de_trabajo(uow_serialized)
-        return uow_serialized
+
+    uow_serialized = pickle.dumps(UnidadTrabajoSQLAlchemy())
+    if session.get('uow_metodo') == 'pulsar':
+        uow_serialized = pickle.dumps(UnidadTrabajoPulsar())
+    
+    registrar_unidad_de_trabajo(uow_serialized)
+    return uow_serialized
 
 def unidad_de_trabajo() -> UnidadTrabajo:
     if is_flask():

@@ -5,7 +5,7 @@ from datetime import datetime
 
 import tokenizacion.modulos.tokenizacion.dominio.objetos_valor as ov
 from tokenizacion.seedwork.dominio.entidades import AgregacionRaiz, Entidad
-from tokenizacion.modulos.tokenizacion.dominio.eventos import TokenCreado
+from tokenizacion.modulos.tokenizacion.dominio.eventos import TokenCreado, TokenRevocado
     
 @dataclass
 class TokenAnonimizacion(Entidad):

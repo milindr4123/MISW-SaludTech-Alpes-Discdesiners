@@ -16,7 +16,7 @@ class TokenAnonimizacion(Entidad):
 @dataclass
 class Token(AgregacionRaiz):
     id_paciente: uuid.UUID = field(default_factory=uuid.uuid4)
-    token_anonimo: ov.TokenAnonimizacion = field(default_factory=ov.TokenAnonimizacion)
+    token_anonimo: ov.TextoToken = field(default_factory=ov.TextoToken)
     
     
     def crear_token(self, token:Token):
@@ -31,4 +31,16 @@ class Token(AgregacionRaiz):
         self.agregar_evento(TokenRevocado(
             id_paciente=self.id_paciente,
             token_anonimo=self.token_anonimo,
-            fecha_revocacion=self.fecha_revocacion))
+            fecha_revocacion=self.fecha_actualizacion))
+        
+@dataclass
+class DetalleToken(AgregacionRaiz):
+    id: str
+    fecha_creacion: datetime = field(default_factory=datetime.utcnow)
+    fecha_expiracion: datetime = field(default_factory=datetime.utcnow)
+    tipo: ov.TipoToken = field(default_factory=ov.TextoToken)
+    estado: ov.EstadoToken = field(default_factory=ov.EstadoToken)
+    id_paciente: ov.IdPaciente = field(default_factory=ov.IdPaciente)
+    token_anonimo: ov.TextoToken = field(default_factory=ov.TextoToken)
+    fecha_actualizacion: datetime = field(default_factory=datetime.utcnow)
+    fecha_revocacion: datetime = field(default_factory=datetime.utcnow)

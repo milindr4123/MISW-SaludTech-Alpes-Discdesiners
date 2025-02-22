@@ -6,7 +6,7 @@ objetos complejos del dominio de tokenización
 """
 
 from .entidades import Token
-from .reglas import ReglaValida
+from .reglas import TextoTokenValido
 from .excepciones import TipoObjetoNoExisteEnDominioTokenizacionExcepcion
 from tokenizacion.seedwork.dominio.repositorios import Mapeador, Repositorio
 from tokenizacion.seedwork.dominio.fabricas import Fabrica
@@ -21,7 +21,7 @@ class _FabricaToken(Fabrica):
         else:
             token: Token = mapeador.dto_a_entidad(obj)
 
-            self.validar_regla(ReglaValida(token))
+            self.validar_regla(TextoTokenValido(token))
             
             return token
 

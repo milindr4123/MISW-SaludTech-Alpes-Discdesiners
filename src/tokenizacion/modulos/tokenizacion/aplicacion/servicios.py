@@ -1,6 +1,6 @@
 from tokenizacion.seedwork.aplicacion.servicios import Servicio
 from tokenizacion.modulos.tokenizacion.dominio.entidades import Token
-from tokenizacion.modulos.tokenizacion.dominio.fabricas import FabricaTokens
+from tokenizacion.modulos.tokenizacion.dominio.fabricas import FabricaTokenizacion
 from tokenizacion.modulos.tokenizacion.infraestructura.fabricas import FabricaRepositorio
 from tokenizacion.modulos.tokenizacion.infraestructura.repositorios import RepositorioTokens
 from tokenizacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
@@ -14,7 +14,7 @@ class ServicioToken(Servicio):
 
     def __init__(self):
         self._fabrica_repositorio: FabricaRepositorio = FabricaRepositorio()
-        self._fabrica_tokens: FabricaTokens = FabricaTokens()
+        self._fabrica_tokens: FabricaTokenizacion = FabricaTokenizacion()
 
     @property
     def fabrica_repositorio(self):

@@ -35,3 +35,15 @@ class Usuario(db.Model):
     nombre = db.Column(db.String, nullable=False)
     email = db.Column(db.String, nullable=False)
     fecha_creacion = db.Column(db.DateTime, nullable=False)
+    
+    
+class DetalleToken(db.Model):
+    __tablename__ = "detalles_tokens"
+    id = db.Column(db.String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    tipo = db.Column(db.String, nullable=False)
+    estado = db.Column(db.String, nullable=False)
+    id_paciente = db.Column(db.String, nullable=False)
+    token_anonimo = db.Column(db.String, nullable=False)
+    fecha_revocacion = db.Column(db.DateTime)
+    fecha_creacion = db.Column(db.DateTime, nullable=False)
+    

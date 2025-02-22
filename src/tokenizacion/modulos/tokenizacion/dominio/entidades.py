@@ -5,23 +5,7 @@ from datetime import datetime
 
 import tokenizacion.modulos.tokenizacion.dominio.objetos_valor as ov
 from tokenizacion.seedwork.dominio.entidades import AgregacionRaiz, Entidad
-from tokenizacion.seedwork.dominio.eventos import PacienteRegistrado, TokenCreado
-
-@dataclass
-class Paciente(AgregacionRaiz):
-    id_paciente: uuid.UUID = field(default_factory=uuid.uuid4)
-    token: ov.TokenAnonimizacion = field(default_factory=ov.TokenAnonimizacion)
-    fecha_registro: datetime = field(default_factory=datetime.utcnow)
-    diagnosticos: list[Diagnostico] = field(default_factory=list)
-    
-    def registrar_paciente(self):
-        self.agregar_evento(PacienteRegistrado(self.id_paciente, self.fecha_registro))
-    
-    def asociar_diagnostico(self, diagnostico: Diagnostico):
-        self.diagnosticos.append(diagnostico)
-        self.agregar_evento(DiagnosticoCreado(diagnostico.id_diagnostico, self.id_paciente))
-
-
+from tokenizacion.modulos.tokenizacion.dominio.eventos import TokenCreado
     
 @dataclass
 class TokenAnonimizacion(Entidad):
@@ -44,4 +28,7 @@ class Token(AgregacionRaiz):
             fecha_creacion=self.fecha_creacion))
         
     def revocar_token(self):
-        self.fecha_revocacion
+        self.agregar_evento(TokenRevocado(
+            id_paciente=self.id_paciente,
+            token_anonimo=self.token_anonimo,
+            fecha_revocacion=self.fecha_revocacion))

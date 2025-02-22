@@ -1,5 +1,5 @@
 from tokenizacion.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
-from tokenizacion.modulos.token.infraestructura.repositorios import RepositorioTokens
+from tokenizacion.modulos.tokenizacion.infraestructura.repositorios import RepositorioTokens
 from tokenizacion.modulos.tokenizacion.aplicacion.mapeadores import MapeadorToken
 from .base import TokenQueryBaseHandler
 from dataclasses import dataclass

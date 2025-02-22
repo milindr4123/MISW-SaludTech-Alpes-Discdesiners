@@ -1,11 +1,11 @@
-from _future_ import annotations
+from __future__ import annotations
 from dataclasses import dataclass, field
 import uuid
 from datetime import datetime
 
-import tokenizacion.dominio.objetos_valor as ov
+import tokenizacion.modulos.tokenizacion.dominio.objetos_valor as ov
 from tokenizacion.seedwork.dominio.entidades import AgregacionRaiz, Entidad
-from tokenizacion.dominio.eventos import PacienteRegistrado, DiagnosticoCreado, ImagenAsociada
+from tokenizacion.seedwork.dominio.eventos import PacienteRegistrado, TokenCreado
 
 @dataclass
 class Paciente(AgregacionRaiz):
@@ -21,26 +21,27 @@ class Paciente(AgregacionRaiz):
         self.diagnosticos.append(diagnostico)
         self.agregar_evento(DiagnosticoCreado(diagnostico.id_diagnostico, self.id_paciente))
 
-@dataclass
-class Diagnostico(Entidad):
-    id_diagnostico: uuid.UUID = field(default_factory=uuid.uuid4)
-    descripcion: str = ""
-    fecha_creacion: datetime = field(default_factory=datetime.utcnow)
-    imagenes: list[ImagenMedica] = field(default_factory=list)
-    
-    def agregar_imagen(self, imagen: ImagenMedica):
-        self.imagenes.append(imagen)
-        self.agregar_evento(ImagenAsociada(imagen.id_imagen, self.id_diagnostico))
 
-@dataclass
-class ImagenMedica(Entidad):
-    id_imagen: uuid.UUID = field(default_factory=uuid.uuid4)
-    tipo: str = ""
-    url_segura: str = ""
-    fecha_subida: datetime = field(default_factory=datetime.utcnow)
     
 @dataclass
 class TokenAnonimizacion(Entidad):
     id_token: uuid.UUID = field(default_factory=uuid.uuid4)
     valor: str = field(default_factory=lambda: str(uuid.uuid4()))
     fecha_generacion: datetime = field(default_factory=datetime.utcnow)
+    
+@dataclass
+class Token(AgregacionRaiz):
+    id_paciente: uuid.UUID = field(default_factory=uuid.uuid4)
+    token_anonimo: ov.TokenAnonimizacion = field(default_factory=ov.TokenAnonimizacion)
+    
+    
+    def crear_token(self, token:Token):
+        self.id_paciente = token.id_paciente
+        self.token_anonimo = token.token_anonimo
+        self.agregar_evento(TokenCreado(
+            id_paciente=self.id_paciente,
+            token_anonimo=self.token_anonimo,
+            fecha_creacion=self.fecha_creacion))
+        
+    def revocar_token(self):
+        self.fecha_revocacion

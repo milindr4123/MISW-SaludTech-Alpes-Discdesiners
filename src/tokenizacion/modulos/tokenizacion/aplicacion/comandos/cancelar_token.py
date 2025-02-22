@@ -1,7 +1,7 @@
 from tokenizacion.seedwork.aplicacion.comandos import Comando, ComandoHandler
 from tokenizacion.modulos.tokenizacion.aplicacion.dto import TokenDTO
 from tokenizacion.modulos.tokenizacion.aplicacion.mapeadores import MapeadorToken
-from tokenizacion.modulos.token.infraestructura.repositorios import RepositorioTokens
+from tokenizacion.modulos.tokenizacion.infraestructura.repositorios import RepositorioTokens
 from tokenizacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from dataclasses import dataclass
 

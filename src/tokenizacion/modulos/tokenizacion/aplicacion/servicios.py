@@ -1,8 +1,8 @@
 from tokenizacion.seedwork.aplicacion.servicios import Servicio
-from tokenizacion.modulos.token.dominio.entidades import Token
-from tokenizacion.modulos.token.dominio.fabricas import FabricaTokens
-from tokenizacion.modulos.token.infraestructura.fabricas import FabricaRepositorio
-from tokenizacion.modulos.token.infraestructura.repositorios import RepositorioTokens
+from tokenizacion.modulos.tokenizacion.dominio.entidades import Token
+from tokenizacion.modulos.tokenizacion.dominio.fabricas import FabricaTokens
+from tokenizacion.modulos.tokenizacion.infraestructura.fabricas import FabricaRepositorio
+from tokenizacion.modulos.tokenizacion.infraestructura.repositorios import RepositorioTokens
 from tokenizacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from .mapeadores import MapeadorToken
 

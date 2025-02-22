@@ -1,6 +1,6 @@
 from tokenizacion.seedwork.aplicacion.comandos import ComandoHandler
-from tokenizacion.modulos.token.infraestructura.fabricas import FabricaRepositorio
-from tokenizacion.modulos.token.dominio.fabricas import FabricaTokens
+from tokenizacion.modulos.tokenizacion.infraestructura.fabricas import FabricaRepositorio
+from tokenizacion.modulos.tokenizacion.dominio.fabricas import FabricaTokens
 
 class CrearTokenBaseHandler(ComandoHandler):
     def __init__(self):

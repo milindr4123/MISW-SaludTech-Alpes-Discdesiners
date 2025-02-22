@@ -16,7 +16,7 @@ class TokenNoExpirado(ReglaNegocio):
         self.token = token
 
     def es_valido(self) -> bool:
-        return self.token.es_valido()
+        return self.tokenizacion.es_valido()
 
 class TextoTokenValido(ReglaNegocio):
 

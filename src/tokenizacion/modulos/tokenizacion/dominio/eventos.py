@@ -1,4 +1,4 @@
-from _future_ import annotations
+from __future__ import annotations
 from dataclasses import dataclass
 from tokenizacion.seedwork.dominio.eventos import EventoDominio
 from datetime import datetime

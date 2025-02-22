@@ -1,6 +1,6 @@
-from tokenizacion.modulos.token.dominio.eventos import TokenCreado, TokenCancelado, TokenAprobado, TokenPagado
+from tokenizacion.modulos.tokenizacion.dominio.eventos import TokenCreado, TokenRevocado
 from tokenizacion.seedwork.aplicacion.handlers import Handler
-from tokenizacion.modulos.token.infraestructura.despachadores import Despachador
+from tokenizacion.modulos.tokenizacion.infraestructura.despachadores import Despachador
 
 class HandlerTokenIntegracion(Handler):
 
@@ -11,15 +11,5 @@ class HandlerTokenIntegracion(Handler):
 
     @staticmethod
     def handle_token_cancelado(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-token')
-
-    @staticmethod
-    def handle_token_aprobado(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-token')
-
-    @staticmethod
-    def handle_token_pagado(evento):
         despachador = Despachador()
         despachador.publicar_evento(evento, 'eventos-token')

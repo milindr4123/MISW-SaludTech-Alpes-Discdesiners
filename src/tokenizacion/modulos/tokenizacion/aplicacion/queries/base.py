@@ -1,6 +1,6 @@
 from tokenizacion.seedwork.aplicacion.queries import QueryHandler
-from tokenizacion.modulos.token.infraestructura.fabricas import FabricaRepositorio
-from tokenizacion.modulos.token.dominio.fabricas import FabricaTokens
+from tokenizacion.modulos.tokenizacion.infraestructura.fabricas import FabricaRepositorio
+from tokenizacion.modulos.tokenizacion.dominio.fabricas import FabricaTokens
 
 class TokenQueryBaseHandler(QueryHandler):
     def __init__(self):

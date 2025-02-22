@@ -1,7 +1,7 @@
 from tokenizacion.seedwork.aplicacion.dto import Mapeador as AppMap
 from tokenizacion.seedwork.dominio.repositorios import Mapeador as RepMap
-from tokenizacion.modulos.token.dominio.entidades import Token
-from tokenizacion.modulos.token.dominio.objetos_valor import DetalleToken
+from tokenizacion.modulos.tokenizacion.dominio.entidades import Token
+from tokenizacion.modulos.tokenizacion.dominio.objetos_valor import DetalleToken
 from .dto import TokenDTO, DetalleTokenDTO
 
 from datetime import datetime

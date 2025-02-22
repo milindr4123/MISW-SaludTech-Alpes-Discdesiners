@@ -1,6 +1,6 @@
 from tokenizacion.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
 from tokenizacion.seedwork.aplicacion.queries import ejecutar_query as query
-from tokenizacion.modulos.token.infraestructura.repositorios import RepositorioTokens
+from tokenizacion.modulos.tokenizacion.infraestructura.repositorios import RepositorioTokens
 from dataclasses import dataclass
 from .base import TokenQueryBaseHandler
 from tokenizacion.modulos.tokenizacion.aplicacion.mapeadores import MapeadorToken

@@ -4,10 +4,10 @@ from .base import CrearTokenBaseHandler
 from dataclasses import dataclass, field
 from tokenizacion.seedwork.aplicacion.comandos import ejecutar_comando as comando
 
-from tokenizacion.modulos.token.dominio.entidades import Token
+from tokenizacion.modulos.tokenizacion.dominio.entidades import Token
 from tokenizacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from tokenizacion.modulos.tokenizacion.aplicacion.mapeadores import MapeadorToken
-from tokenizacion.modulos.token.infraestructura.repositorios import RepositorioTokens
+from tokenizacion.modulos.tokenizacion.infraestructura.repositorios import RepositorioTokens
 
 @dataclass
 class CrearToken(Comando):

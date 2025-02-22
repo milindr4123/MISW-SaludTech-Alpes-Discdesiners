@@ -7,12 +7,9 @@ En este archivo usted encontrará los objetos valor del dominio de tokenización
 from __future__ import annotations
 
 from dataclasses import dataclass
-from tokenizacion.seedwork.dominio.objetos_valor import ObjetoValor, Codigo
+from tokenizacion.seedwork.dominio.objetos_valor import ObjetoValor
 from enum import Enum
 
-@dataclass(frozen=True)
-class CodigoToken(Codigo):
-    ...
 
 @dataclass(frozen=True)
 class TextoToken(ObjetoValor):

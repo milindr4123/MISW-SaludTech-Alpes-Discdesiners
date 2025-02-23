@@ -9,7 +9,7 @@ from dataclasses import dataclass, field
 from hsm.seedwork.dominio.fabricas import Fabrica
 from hsm.seedwork.dominio.repositorios import Repositorio
 from hsm.seedwork.infraestructura.vistas import Vista
-from hsm.modulos.semilla.infraestructura.vistas import VistaReserva
+from hsm.modulos.semilla.infraestructura.vistas import VistaSemilla
 from hsm.modulos.semilla.dominio.entidades import Semilla
 from hsm.modulos.semilla.dominio.repositorios import  RepositorioSemilla, RepositorioEventosSemilla
 from .repositorios import RepositorioSemillaSQLAlchemy, RepositorioProveedoresSQLAlchemy, RepositorioEventosReservaSQLAlchemy

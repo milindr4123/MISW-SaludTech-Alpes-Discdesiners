@@ -1,7 +1,7 @@
 import uuid
 
 from pulsar.schema import *
-from token.seedwork.infraestructura.utils import time_millis
+from hsm.seedwork.infraestructura.utils import time_millis
 
 class Mensaje(Record):
     id = String(default=str(uuid.uuid4()))

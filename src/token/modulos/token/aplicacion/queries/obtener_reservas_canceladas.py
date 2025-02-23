@@ -1,4 +1,4 @@
-from aeroalpes.seedwork.aplicacion.queries import Query, QueryHandler, ResultadoQuery
+from hsm.seedwork.aplicacion.queries import Query, QueryHandler, ResultadoQuery
 import uuid
 
 class ObtenerReservasCanceladas(Query):

@@ -1,6 +1,6 @@
 from pulsar.schema import *
-from aeroalpes.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
-from aeroalpes.seedwork.infraestructura.utils import time_millis
+from hsm.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
+from hsm.seedwork.infraestructura.utils import time_millis
 import uuid
 
 class SemillaCreadaPayload(Record):

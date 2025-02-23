@@ -91,7 +91,7 @@ def crear_token_documento():
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
 
-@bp.route('/token-comando-documento', methods=('POST',))
+@bp.route('/token_comando_documento', methods=('POST',))
 def crear_token_documento_asincrona():
     try:
         token_dict = request.json

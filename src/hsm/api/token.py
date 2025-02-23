@@ -1,6 +1,26 @@
-@bp.route('/generar-hsm-comando', methods=('POST',))
-def generar_hsm_asincrona():
+import hsm.seedwork.presentacion.api as api
+import json
+from hsm.modulos.semilla.aplicacion.dto import SemillaDTO
+from hsm.seedwork.dominio.excepciones import ExcepcionDominio
+
+from flask import redirect, render_template, request, session, url_for
+from flask import Response
+from hsm.modulos.semilla.aplicacion.mapeadores import MapeadorReservaDTOJson
+from hsm.modulos.semilla.aplicacion.comandos.crear_reserva import CrearReserva
+from hsm.modulos.semilla.aplicacion.queries.obtener_reserva import ObtenerReserva
+from hsm.seedwork.aplicacion.comandos import ejecutar_commando
+from hsm.seedwork.aplicacion.queries import ejecutar_query
+
+bp = api.crear_blueprint('hsm', '/hsm')
+
+
+@bp.route('/hsm', methods=('POST',))
+def reservar_usando_comando():
     try:
+        # NOTE Asignamos el valor 'pulsar' para usar la Unidad de trabajo de Pulsar y 
+        # no la defecto de SQLAlchemy
+        session['uow_metodo'] = 'pulsar'
+
         reserva_dict = request.json
 
         map_reserva = MapeadorReservaDTOJson()

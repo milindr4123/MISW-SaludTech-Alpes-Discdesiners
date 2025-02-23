@@ -23,8 +23,8 @@ class Despachador:
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del evento
         payload = TokenCreadoPayload(
             id=str(evento.id), 
-            id_usuario=str(evento.id_usuario), 
-            estado=str(evento.estado), 
+            id_paciente=str(evento.id_paciente), 
+            token_anonimo=str(evento.token_anonimo), 
             fecha_creacion=int(unix_time_millis(evento.fecha_creacion))
         )
         evento_integracion = EventoTokenCreado(data=payload)
@@ -33,7 +33,7 @@ class Despachador:
     def publicar_comando(self, comando, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
         payload = CrearTokenPayload(
-            id_usuario=str(comando.id_usuario)
+            id_paciente=str(comando.id_paciente)
             # agregar otros campos necesarios
         )
         comando_integracion = ComandoCrearToken(data=payload)

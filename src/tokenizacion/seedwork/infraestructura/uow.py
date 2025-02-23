@@ -6,6 +6,7 @@ from pydispatch import dispatcher
 
 import pickle
 
+OBJ_SESION='uow_3'
 
 class Lock(Enum):
     OPTIMISTA = 1
@@ -83,13 +84,13 @@ def registrar_unidad_de_trabajo(serialized_obj):
     from flask import session
     
 
-    session['uow'] = serialized_obj
+    session[OBJ_SESION] = serialized_obj
 
 def flask_uow():
     from flask import session
     from tokenizacion.config.uow import UnidadTrabajoSQLAlchemy
-    if session.get('uow'):
-        return session['uow']
+    if session.get(OBJ_SESION):
+        return session[OBJ_SESION] 
     else:
         uow_serialized = pickle.dumps(UnidadTrabajoSQLAlchemy())
         registrar_unidad_de_trabajo(uow_serialized)

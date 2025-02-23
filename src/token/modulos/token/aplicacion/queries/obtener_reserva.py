@@ -1,9 +1,9 @@
-from aeroalpes.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
-from aeroalpes.seedwork.aplicacion.queries import ejecutar_query as query
-from aeroalpes.modulos.vuelos.infraestructura.repositorios import RepositorioReservas
+from hsm.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
+from hsm.seedwork.aplicacion.queries import ejecutar_query as query
+from hsm.modulos.vuelos.infraestructura.repositorios import RepositorioReservas
 from dataclasses import dataclass
 from .base import ReservaQueryBaseHandler
-from aeroalpes.modulos.vuelos.aplicacion.mapeadores import MapeadorReserva
+from hsm.modulos.vuelos.aplicacion.mapeadores import MapeadorReserva
 import uuid
 
 @dataclass

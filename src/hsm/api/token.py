@@ -5,8 +5,8 @@ from hsm.seedwork.dominio.excepciones import ExcepcionDominio
 
 from flask import redirect, render_template, request, session, url_for
 from flask import Response
-from hsm.modulos.semilla.aplicacion.mapeadores import MapeadorReservaDTOJson
-from hsm.modulos.semilla.aplicacion.comandos.crear_reserva import CrearReserva
+from hsm.modulos.semilla.aplicacion.mapeadores import MapeadorSemillaDTOJson
+from hsm.modulos.semilla.aplicacion.comandos.crear_semilla import CrearSemilla
 from hsm.modulos.semilla.aplicacion.queries.obtener_reserva import ObtenerReserva
 from hsm.seedwork.aplicacion.comandos import ejecutar_commando
 from hsm.seedwork.aplicacion.queries import ejecutar_query

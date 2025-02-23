@@ -11,8 +11,8 @@ class MapeadorSemillaDTOJson(AppMap):
     def externo_a_dto(self, externo: dict) -> SemillaDTO:
         semilla_dto = SemillaDTO()   
         semilla_dto.length  
-        semilla_dto.formato     
-      return semilla_dto
+        semilla_dto.formato   
+        return semilla_dto
 
     def dto_a_externo(self, dto: SemillaDTO) -> dict:
         return dto.__dict__

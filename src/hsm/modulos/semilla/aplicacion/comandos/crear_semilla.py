@@ -1,16 +1,16 @@
-from aeroalpes.seedwork.aplicacion.comandos import Comando
-from aeroalpes.modulos.vuelos.aplicacion.dto import ItinerarioDTO, ReservaDTO
+from hsm.seedwork.aplicacion.comandos import Comando
+from hsm.modulos.semilla.aplicacion.dto import SemillaDTO
 from .base import CrearReservaBaseHandler
 from dataclasses import dataclass, field
-from aeroalpes.seedwork.aplicacion.comandos import ejecutar_commando as comando
+from hsm.seedwork.aplicacion.comandos import ejecutar_commando as comando
 
-from aeroalpes.modulos.vuelos.dominio.entidades import Reserva
-from aeroalpes.seedwork.infraestructura.uow import UnidadTrabajoPuerto
-from aeroalpes.modulos.vuelos.aplicacion.mapeadores import MapeadorReserva
-from aeroalpes.modulos.vuelos.infraestructura.repositorios import RepositorioReservas
+from hsm.modulos.semilla.dominio.entidades import Semilla
+from hsm.seedwork.infraestructura.uow import UnidadTrabajoPuerto
+from hsm.modulos.semilla.aplicacion.mapeadores import MapeadorSemilla
+from hsm.modulos.semilla.infraestructura.repositorios import RepositorioReservas
 
 @dataclass
-class CrearReserva(Comando):
+class CrearSemilla(Comando):
     fecha_creacion: str
     fecha_actualizacion: str
     id: str

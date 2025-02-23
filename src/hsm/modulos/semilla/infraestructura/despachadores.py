@@ -5,11 +5,11 @@ from hsm.modulos.semilla.infraestructura.schema.v1.eventos import EventoSemillaC
 from hsm.modulos.semilla.infraestructura.schema.v1.comandos import ComandoCrearSemilla, ComandoCrearSemillaPayload
 from hsm.seedwork.infraestructura import utils
 
-from hsm.modulos.semilla.infraestructura.mapeadores import MapadeadorEventosReserva
+from hsm.modulos.semilla.infraestructura.mapeadores import MapadeadorEventosSemilla
 
 class Despachador:
     def __init__(self):
-        self.mapper = MapadeadorEventosReserva()
+        self.mapper = MapadeadorEventosSemilla()
 
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')

@@ -2,11 +2,10 @@ import hsm.seedwork.presentacion.api as api
 import json
 from hsm.seedwork.dominio.excepciones import ExcepcionDominio
 from hsm.modulos.semilla.infraestructura.despachadores import Despachador
-from flask import redirect, render_template, request, session, url_for
+from flask import request, session
 from flask import Response
 from hsm.modulos.semilla.aplicacion.mapeadores import MapeadorSemillaDTOJson
 from hsm.modulos.semilla.aplicacion.comandos.crear_semilla import CrearSemilla
-from hsm.seedwork.aplicacion.comandos import ejecutar_commando
 
 bp = api.crear_blueprint('hsm', '/hsm')
 despachador = Despachador()

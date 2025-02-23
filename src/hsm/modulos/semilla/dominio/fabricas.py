@@ -8,7 +8,7 @@ objetos complejos del dominio de semilla
 from .entidades import Semilla
 from .reglas import MinimoTamano
 from .excepciones import TipoObjetoNoExisteEnDominioVuelosExcepcion
-from hsm.seedwork.dominio.repositorios import Mapeador, Repositorio
+from hsm.seedwork.dominio.repositorios import Mapeador
 from hsm.seedwork.dominio.fabricas import Fabrica
 from hsm.seedwork.dominio.entidades import Entidad
 from hsm.seedwork.dominio.eventos import EventoDominio

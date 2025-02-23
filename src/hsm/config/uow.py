@@ -1,5 +1,5 @@
-from aeroalpes.config.db import db
-from aeroalpes.seedwork.infraestructura.uow import UnidadTrabajo, Batch
+from hsm.config.db import db
+from hsm.seedwork.infraestructura.uow import UnidadTrabajo, Batch
 
 class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
 
@@ -24,13 +24,16 @@ class UnidadTrabajoSQLAlchemy(UnidadTrabajo):
         return self._batches             
 
     def commit(self):
-        for batch in self.batches:
-            lock = batch.lock
-            batch.operacion(*batch.args, **batch.kwargs)
+        try:  # FIX: Se agregó manejo de excepciones para evitar fallos en mitad del commit
+            for batch in self.batches:
+                lock = batch.lock
+                batch.operacion(*batch.args, **batch.kwargs)
 
-        db.session.commit()
-
-        super().commit()
+            db.session.commit()
+            super().commit()
+        except Exception as e:  # FIX: Captura errores y revierte la transacción si algo falla
+            db.session.rollback()
+            raise e
 
     def rollback(self, savepoint=None):
         if savepoint:

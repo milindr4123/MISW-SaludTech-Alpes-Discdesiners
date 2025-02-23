@@ -7,7 +7,6 @@ class MapeadorSemillaDTOJson(AppMap):
    
     def externo_a_dto(self, externo: dict) -> SemillaDTO:
         "Convierte un diccionario JSON a un objeto DTO"
-        semilla_dto = SemillaDTO()   
         length = externo.get("length")  
         formato = externo.get("formato")  
         return SemillaDTO(length=length, formato=formato)

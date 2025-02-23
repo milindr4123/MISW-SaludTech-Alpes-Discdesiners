@@ -12,28 +12,28 @@ from hsm.modulos.semilla.infraestructura.repositorios import RepositorioSemilla
 @dataclass
 class CrearSemilla(Comando):
     formato: str
-    lenght: str
+    length: str
 
 
 class CrearSemillaHandler(CrearSemillaBaseHandler):
     
     def handle(self, comando: CrearSemilla):
         semilla_dto = SemillaDTO(
-                length=comando.lenght,
+                length=comando.length,
                 formato=comando.formato)
 
         semilla: Semilla = self.fabrica_semillas.crear_objeto(semilla_dto, MapeadorSemilla())
-        semilla.crear_reserva(reserva)
+        semilla.crear_semilla(semilla)
 
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioReservas.__class__)
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioSemilla.__class__)
 
-        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, reserva)
+        UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, semilla)
         UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()
 
 
-@comando.register(CrearReserva)
-def ejecutar_comando_crear_reserva(comando: CrearReserva):
-    handler = CrearReservaHandler()
+@comando.register(CrearSemilla)
+def ejecutar_comando_crear_semilla(comando: CrearSemilla):
+    handler = CrearSemillaHandler()
     handler.handle(comando)
     

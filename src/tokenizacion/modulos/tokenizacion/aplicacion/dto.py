@@ -18,7 +18,3 @@ class UsuarioDTO(DTO):
     nombre: str = field(default_factory=str)
     email: str = field(default_factory=str)
     tokens: list[TokenDTO] = field(default_factory=list)
-    
-@dataclass(frozen=True)
-class DetalleTokenDTO(DTO):
-    id: str

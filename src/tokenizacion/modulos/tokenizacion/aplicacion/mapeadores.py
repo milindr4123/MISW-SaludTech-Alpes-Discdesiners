@@ -1,8 +1,7 @@
 from tokenizacion.seedwork.aplicacion.dto import Mapeador as AppMap
 from tokenizacion.seedwork.dominio.repositorios import Mapeador as RepMap
 from tokenizacion.modulos.tokenizacion.dominio.entidades import Token
-from tokenizacion.modulos.tokenizacion.dominio.objetos_valor import DetalleToken
-from .dto import TokenDTO, DetalleTokenDTO
+from .dto import TokenDTO
 
 from datetime import datetime
 
@@ -30,23 +29,17 @@ class MapeadorTokenDTOJson(AppMap):
 class MapeadorToken(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
-    def _procesar_detalle(self, detalle_dto: DetalleTokenDTO) -> DetalleToken:
-        return DetalleToken(
-            nombre=detalle_dto.nombre,
-            descripcion=detalle_dto.descripcion,
-            valor=detalle_dto.valor
-        )
-
     def obtener_tipo(self) -> type:
         return Token.__class__
 
     def entidad_a_dto(self, entidad: Token) -> TokenDTO:
         fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
-        fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
         _id = str(entidad.id)
-        detalle = self._procesar_detalle(entidad.detalle)
+        token_anonimo = str(entidad.token_anonimo)
+        id_paciente = str(entidad.id_paciente)
+
         
-        return TokenDTO(fecha_creacion, fecha_actualizacion, _id, detalle)
+        return TokenDTO(_id, id_paciente, token_anonimo, fecha_creacion)
 
     def dto_a_entidad(self, dto: TokenDTO) -> Token:
         try:

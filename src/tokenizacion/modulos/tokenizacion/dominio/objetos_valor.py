@@ -24,9 +24,3 @@ class Token(ObjetoValor):
     token: TextoToken
     id_paciente: IdPaciente
     fecha_creacion: datetime = datetime.now()
-
-    
-    
-@dataclass(frozen=True)
-class DetalleToken(ObjetoValor):
-    id: str

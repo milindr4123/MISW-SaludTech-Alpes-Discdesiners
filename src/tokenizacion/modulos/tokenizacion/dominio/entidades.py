@@ -27,8 +27,3 @@ class Token(AgregacionRaiz):
             id_paciente=self.id_paciente,
             token_anonimo=self.token_anonimo,
             fecha_creacion=self.fecha_creacion))
-        
-        
-@dataclass
-class DetalleToken(AgregacionRaiz):
-    id: str

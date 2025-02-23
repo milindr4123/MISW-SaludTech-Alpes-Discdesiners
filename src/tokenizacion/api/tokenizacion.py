@@ -39,7 +39,7 @@ def crear_token_asincrona():
         map_token = MapeadorTokenDTOJson()
         token_dto = map_token.externo_a_dto(token_dict)
 
-        comando = CrearToken(token_dto.fecha_creacion, token_dto.fecha_actualizacion, token_dto.id, token_dto.detalle)
+        comando = CrearToken(token_dto.id, token_dto.id_paciente, token_dto.token_anonimo, token_dto.fecha_creacion)
         
         # TODO Reemplaze este código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura
@@ -88,4 +88,23 @@ def crear_token_documento():
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
     except Exception as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+
+
+@bp.route('/token-comando-documento', methods=('POST',))
+def crear_token_documento_asincrona():
+    try:
+        token_dict = request.json
+
+        map_token = MapeadorTokenDTOJson()
+        token_dto = map_token.externo_a_dto(token_dict)
+
+        comando = CrearToken(token_dto.id, token_dto.id_paciente, token_dto.token_anonimo, token_dto.fecha_creacion)
+        
+        # TODO Reemplaze este código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
+        # Revise la clase Despachador de la capa de infraestructura
+        ejecutar_commando(comando)
+        
+        return Response('{}', status=202, mimetype='application/json')
+    except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')

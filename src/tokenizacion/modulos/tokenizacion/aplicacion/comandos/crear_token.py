@@ -11,19 +11,19 @@ from tokenizacion.modulos.tokenizacion.infraestructura.repositorios import Repos
 
 @dataclass
 class CrearToken(Comando):
-    fecha_creacion: str
-    fecha_actualizacion: str
     id: str
-    detalle: dict
+    id_paciente : str
+    token_anonimo : str
+    fecha_creacion: str
 
 class CrearTokenHandler(CrearTokenBaseHandler):
     
     def handle(self, comando: CrearToken):
         token_dto = TokenDTO(
-                fecha_actualizacion=comando.fecha_actualizacion,
-                fecha_creacion=comando.fecha_creacion,
                 id=comando.id,
-                detalle=comando.detalle)
+                id_paciente =comando.id_paciente,
+                token_anonimo =comando.token_anonimo,
+                fecha_creacion =comando.fecha_creacion)
 
         token: Token = self.fabrica_tokens.crear_objeto(token_dto, MapeadorToken())
         token.crear_token(token)

@@ -7,10 +7,10 @@ class FechaTokenDTO(DTO):
 
 @dataclass(frozen=True)
 class TokenDTO(DTO):
-    codigo: str
-    texto: str
-    fecha: FechaTokenDTO
-    tipo: str
+    codigo: str = field(default_factory=str)
+    texto: str = field(default_factory=str)
+    fecha: str = field(default_factory=str)
+    tipo: str = field(default_factory=str)
 
 @dataclass(frozen=True)
 class UsuarioDTO(DTO):

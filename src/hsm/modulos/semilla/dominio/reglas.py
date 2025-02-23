@@ -1,46 +1,22 @@
-"""Reglas de negocio del dominio de cliente
+"""Reglas de negocio del dominio de semilla
 
-En este archivo usted encontrará reglas de negocio del dominio de cliente
+En este archivo usted encontrará reglas de negocio del dominio de semilla
 
 """
 
-from aeroalpes.seedwork.dominio.reglas import ReglaNegocio
-from .objetos_valor import Ruta
-from .entidades import Pasajero
-from .objetos_valor import TipoPasajero, Itinerario
+from hsm.seedwork.dominio.reglas import ReglaNegocio
+from .objetos_valor import Formato, Length
+from .entidades import Semilla
 
+class MinimoTamano(ReglaNegocio):
 
-class MinimoUnAdulto(ReglaNegocio):
+    semilla: Semilla
 
-    pasajeros: list[Pasajero]
-
-    def __init__(self, pasajeros, mensaje='Al menos un adulto debe ser parte del itinerario'):
+    def __init__(self, semilla, mensaje='Al menos debe tener un tamano de 32'):
         super().__init__(mensaje)
-        self.pasajeros = pasajeros
+        self.semilla = semilla
 
     def es_valido(self) -> bool:
-        for pasajero in self.pasajeros:
-            if pasajero.tipo == TipoPasajero.ADULTO:
+        if  self.semilla.length >= 32:
                 return True
         return False
-
-class RutaValida(ReglaNegocio):
-
-    ruta: Ruta
-
-    def __init__(self, ruta, mensaje='La ruta propuesta es incorrecta'):
-        super().__init__(mensaje)
-        self.ruta = ruta
-
-    def es_valido(self) -> bool:
-        return self.ruta.destino != self.ruta.origen
-
-class MinimoUnItinerario(ReglaNegocio):
-    itinerarios: list[Itinerario]
-
-    def __init__(self, itinerarios, mensaje='La lista de itinerarios debe tener al menos un itinerario'):
-        super().__init__(mensaje)
-        self.itinerarios = itinerarios
-
-    def es_valido(self) -> bool:
-        return len(self.itinerarios) > 0 and isinstance(self.itinerarios[0], Itinerario) 

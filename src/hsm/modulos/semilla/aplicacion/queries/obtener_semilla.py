@@ -7,7 +7,7 @@ from aeroalpes.modulos.vuelos.aplicacion.mapeadores import MapeadorReserva
 import uuid
 
 @dataclass
-class ObtenerReserva(Query):
+class ObtenerSemilla(Query):
     id: str
 
 class ObtenerReservaHandler(ReservaQueryBaseHandler):

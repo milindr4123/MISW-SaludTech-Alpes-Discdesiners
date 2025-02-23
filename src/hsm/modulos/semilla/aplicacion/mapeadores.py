@@ -1,7 +1,7 @@
 from hsm.seedwork.aplicacion.dto import Mapeador as AppMap
 from hsm.seedwork.dominio.repositorios import Mapeador as RepMap
-from hsm.modulos.semilla.dominio.entidades import 
-from hsm.modulos.semilla.dominio.objetos_valor import 
+from hsm.modulos.semilla.dominio.entidades import Semilla
+from hsm.modulos.semilla.dominio.objetos_valor import Formato, Length
 from .dto import SemillaDTO
 
 from datetime import datetime
@@ -24,16 +24,16 @@ class MapeadorSemilla(RepMap):
         return Semilla.__class__
         
 
-    def entidad_a_dto(self, entidad: Semilla) -> SemillaDTO:
-        
-        fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
-        fecha_actualizacion = entidad.fecha_actualizacion.strftime(self._FORMATO_FECHA)
-        _id = str(entidad.id)               
-        return SemillaDTO(fecha_creacion, fecha_actualizacion, _id, itinerarios)
+    def entidad_a_dto(self) -> SemillaDTO:
+        length = "32"
+        formato = "hex"
+        return SemillaDTO(length=length, formato=formato)
 
-    def dto_a_entidad(self, dto: ReservaDTO) -> Reserva:
-        semilla = Semilla()            
-        return reserva
+    def dto_a_entidad(self, dto: SemillaDTO) -> Semilla:
+        semilla = Semilla()       
+        semilla.length = dto.length
+        semilla.format = dto.formato
+        return semilla
 
 
 

@@ -1,23 +1,21 @@
 from hsm.seedwork.aplicacion.comandos import Comando
 from hsm.modulos.semilla.aplicacion.dto import SemillaDTO
-from .base import CrearReservaBaseHandler
+from .base import CrearSemillaBaseHandler
 from dataclasses import dataclass, field
 from hsm.seedwork.aplicacion.comandos import ejecutar_commando as comando
 
 from hsm.modulos.semilla.dominio.entidades import Semilla
 from hsm.seedwork.infraestructura.uow import UnidadTrabajoPuerto
 from hsm.modulos.semilla.aplicacion.mapeadores import MapeadorSemilla
-from hsm.modulos.semilla.infraestructura.repositorios import RepositorioReservas
+from hsm.modulos.semilla.infraestructura.repositorios import RepositorioSemilla
 
 @dataclass
 class CrearSemilla(Comando):
-    fecha_creacion: str
-    fecha_actualizacion: str
-    id: str
-    itinerarios: list[ItinerarioDTO]
+    formato: str
+    lenght: str
 
 
-class CrearReservaHandler(CrearReservaBaseHandler):
+class CrearSemillaHandler(CrearSemillaBaseHandler):
     
     def handle(self, comando: CrearReserva):
         reserva_dto = ReservaDTO(

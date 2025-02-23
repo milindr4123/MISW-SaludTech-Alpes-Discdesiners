@@ -3,8 +3,8 @@ from tokenizacion.seedwork.infraestructura.schema.v1.eventos import EventoIntegr
 
 class TokenCreadoPayload(Record):
     id_token = String()
-    id_usuario = String()
-    estado = String()
+    id_paciente = String()
+    token_anonimo = String()
     fecha_creacion = Long()
 
 class EventoTokenCreado(EventoIntegracion):

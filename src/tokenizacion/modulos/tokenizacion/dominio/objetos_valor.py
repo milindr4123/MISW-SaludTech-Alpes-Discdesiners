@@ -20,26 +20,17 @@ class TextoToken(ObjetoValor):
 class FechaToken(ObjetoValor):
     fecha_creacion: datetime
 
-class TipoToken(Enum):
-    ACCESO = "Acceso"
-    REFRESCO = "Refresco"
-    
-class EstadoToken(Enum):
-    ACCESO = "Activo"
-    REFRESCO = "Retirado"
+
     
 class IdPaciente(ObjetoValor):
     id_paciente:str
 
 @dataclass(frozen=True)
 class Token(ObjetoValor):
-    texto: TextoToken
-    tipo: TipoToken
-    estado: EstadoToken
+    token: TextoToken
     id_paciente: IdPaciente
+    fecha_creacion: FechaToken
 
-    def obtener_tipo(self) -> TipoToken:
-        return self.tipo
     
     
 @dataclass(frozen=True)

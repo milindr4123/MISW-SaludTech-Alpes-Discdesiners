@@ -13,14 +13,16 @@ class MapeadorToken(Mapeador):
     def entidad_a_dto(self, entidad: Token) -> TokenDTO:
         token_dto = TokenDTO()
         token_dto.id = str(entidad.id)
-        token_dto.estado = entidad.estado
-        token_dto.fecha_creacion = entidad.fecha_creacion
+        token_dto.id_paciente = entidad.id_paciente
+        token_dto.token_anonimo = entidad.token_anonimo
+        token_dto.fecha_creacion = entidad.fecha_creacion 
         return token_dto
 
     def dto_a_entidad(self, dto: TokenDTO) -> Token:
         token = Token(
             id=dto.id,
-            estado=dto.estado,
+            id_paciente=dto.id_paciente,
+            token_anonimo = dto.token_anonimo,
             fecha_creacion=dto.fecha_creacion
         )
         return token

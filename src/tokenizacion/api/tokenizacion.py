@@ -70,3 +70,22 @@ def obtener_token_usando_query(id=None):
         return map_token.dto_a_externo(query_resultado.resultado)
     else:
         return [{'message': 'GET!'}]
+
+
+
+@bp.route('/token_documento', methods=('POST',))
+def crear_token():
+    try:
+        token_dict = request.json
+
+        map_token = MapeadorTokenDTOJson()
+        token_dto = map_token.externo_a_dto(token_dict)
+
+        sr = ServicioToken()
+        dto_final = sr.crear_token(token_dto)
+
+        return map_token.dto_a_externo(dto_final)
+    except ExcepcionDominio as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+    except Exception as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')

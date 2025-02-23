@@ -25,9 +25,9 @@ tokens_usuarios = db.Table(
 class Token(db.Model):
     __tablename__ = "tokens"
     id = db.Column(db.String, primary_key=True, default=lambda: str(uuid.uuid4()))
-    estado = db.Column(db.String, nullable=False)
+    id_paciente = db.Column(db.String, nullable=False)
+    token_anonimo = db.Column(db.String, nullable=False)
     fecha_creacion = db.Column(db.DateTime, nullable=False)
-    usuarios = db.relationship('Usuario', secondary=tokens_usuarios, backref='tokens')
 
 class Usuario(db.Model):
     __tablename__ = "usuarios"

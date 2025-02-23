@@ -7,18 +7,13 @@ from .dto import TokenDTO, DetalleTokenDTO
 from datetime import datetime
 
 class MapeadorTokenDTOJson(AppMap):
-    def _procesar_detalle(self, detalle: dict) -> DetalleTokenDTO:
-        return DetalleTokenDTO(
-            detalle.get('nombre'),
-            detalle.get('descripcion'),
-            detalle.get('valor')
-        )
+    
     
     def externo_a_dto(self, externo: dict) -> TokenDTO:
         token_dto = TokenDTO()
-        token_dto.detalle = self._procesar_detalle(externo.get('detalle'))
+        token_dto.id_paciente = externo.get('id_paciente')
+        token_dto.token_anonimo = externo.get('token_anonimo')
         token_dto.fecha_creacion = externo.get('fecha_creacion')
-        token_dto.fecha_actualizacion = externo.get('fecha_actualizacion')
         token_dto.id = externo.get('id')
         return token_dto
 

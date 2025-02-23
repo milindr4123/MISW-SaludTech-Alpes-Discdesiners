@@ -17,6 +17,7 @@ class TokenAnonimizacion(Entidad):
 class Token(AgregacionRaiz):
     id_paciente: uuid.UUID = field(default_factory=uuid.uuid4)
     token_anonimo: ov.TextoToken = field(default_factory=ov.TextoToken)
+    fecha_creacion: ov.FechaToken = field(default_factory=ov.FechaToken)
     
     
     def crear_token(self, token:Token):

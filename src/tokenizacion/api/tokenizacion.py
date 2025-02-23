@@ -28,6 +28,8 @@ def crear_token():
         return map_token.dto_a_externo(dto_final)
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
+    except Exception as e:
+        return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
 @bp.route('/token-comando', methods=('POST',))
 def crear_token_asincrona():

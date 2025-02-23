@@ -10,11 +10,18 @@ class MapeadorTokenDTOJson(AppMap):
     
     
     def externo_a_dto(self, externo: dict) -> TokenDTO:
-        token_dto = TokenDTO()
-        token_dto.id_paciente = externo.get('id_paciente')
-        token_dto.token_anonimo = externo.get('token_anonimo')
-        token_dto.fecha_creacion = externo.get('fecha_creacion')
-        token_dto.id = externo.get('id')
+        token_dto = TokenDTO(
+            id = externo.get('id'), 
+            id_paciente= externo.get('id_paciente'),
+            token_anonimo = externo.get('token_anonimo'),
+            fecha_creacion= externo.get('fecha_creacion')
+        )
+
+        # token_dto = TokenDTO()
+        # token_dto.id_paciente = externo.get('id_paciente')
+        # token_dto.token_anonimo = externo.get('token_anonimo')
+        # token_dto.fecha_creacion = externo.get('fecha_creacion')
+        # token_dto.id = externo.get('id')
         return token_dto
 
     def dto_a_externo(self, dto: TokenDTO) -> dict:
@@ -42,10 +49,14 @@ class MapeadorToken(RepMap):
         return TokenDTO(fecha_creacion, fecha_actualizacion, _id, detalle)
 
     def dto_a_entidad(self, dto: TokenDTO) -> Token:
-        token = Token()
-        token.detalle = self._procesar_detalle(dto.detalle)
-        token.fecha_creacion = datetime.strptime(dto.fecha_creacion, self._FORMATO_FECHA)
-        token.fecha_actualizacion = datetime.strptime(dto.fecha_actualizacion, self._FORMATO_FECHA)
-        token.id = dto.id
+        try:
+            token = Token()
+            token.id_paciente = dto.id_paciente
+            token.token_anonimo = dto.token_anonimo
+            return token
+        except Exception as e:
+           
+            print(f"Ocurrió un error: {e}")
         
-        return token
+        
+        

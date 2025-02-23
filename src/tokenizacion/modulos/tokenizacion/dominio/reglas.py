@@ -5,7 +5,8 @@ En este archivo usted encontrará reglas de negocio del dominio de tokenización
 """
 
 from tokenizacion.seedwork.dominio.reglas import ReglaNegocio
-from .objetos_valor import Token, FechaToken
+from .objetos_valor import Token
+from datetime import datetime
 
 class TokenNoExpirado(ReglaNegocio):
 
@@ -31,7 +32,7 @@ class TextoTokenValido(ReglaNegocio):
 
 class FechaTokenValida(ReglaNegocio):
 
-    fecha_token: FechaToken
+    fecha_token: datetime
 
     def __init__(self, fecha_token, mensaje='La fecha del token no es válida'):
         super().__init__(mensaje)

@@ -74,7 +74,7 @@ def obtener_token_usando_query(id=None):
 
 
 @bp.route('/token_documento', methods=('POST',))
-def crear_token():
+def crear_token_documento():
     try:
         token_dict = request.json
 

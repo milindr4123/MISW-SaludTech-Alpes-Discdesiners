@@ -1,4 +1,4 @@
-from tokenizacion.modulos.tokenizacion.dominio.eventos import TokenCreado, TokenRevocado
+from tokenizacion.modulos.tokenizacion.dominio.eventos import TokenCreado
 from tokenizacion.seedwork.aplicacion.handlers import Handler
 from tokenizacion.modulos.tokenizacion.infraestructura.despachadores import Despachador
 

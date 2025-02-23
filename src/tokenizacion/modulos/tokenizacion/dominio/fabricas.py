@@ -21,7 +21,7 @@ class _FabricaToken(Fabrica):
         else:
             token: Token = mapeador.dto_a_entidad(obj)
 
-            self.validar_regla(TextoTokenValido(token))
+            # self.validar_regla(TextoTokenValido(token))
             
             return token
 

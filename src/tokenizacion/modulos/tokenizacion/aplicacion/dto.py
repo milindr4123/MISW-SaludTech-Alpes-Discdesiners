@@ -1,9 +1,9 @@
 from dataclasses import dataclass, field
 from tokenizacion.seedwork.aplicacion.dto import DTO
 
-@dataclass(frozen=True)
-class FechaTokenDTO(DTO):
-    fecha_creacion: str
+# @dataclass(frozen=True)
+# class FechaTokenDTO(DTO):
+#     fecha_creacion: str
 
 @dataclass(frozen=True)
 class TokenDTO(DTO):

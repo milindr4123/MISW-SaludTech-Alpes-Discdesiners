@@ -14,14 +14,8 @@ from datetime import datetime
 
 @dataclass(frozen=True)
 class TextoToken(ObjetoValor):
-    texto: str
-    
-@dataclass(frozen=True)
-class FechaToken(ObjetoValor):
-    fecha_creacion: datetime
+    texto: str = ""
 
-
-    
 class IdPaciente(ObjetoValor):
     id_paciente:str
 
@@ -29,18 +23,10 @@ class IdPaciente(ObjetoValor):
 class Token(ObjetoValor):
     token: TextoToken
     id_paciente: IdPaciente
-    fecha_creacion: FechaToken
+    fecha_creacion: datetime = datetime.now()
 
     
     
 @dataclass(frozen=True)
 class DetalleToken(ObjetoValor):
     id: str
-    fecha_creacion: FechaToken
-    fecha_expiracion: FechaToken
-    tipo: TipoToken
-    estado: EstadoToken
-    id_paciente: IdPaciente
-    token_anonimo: TextoToken
-    fecha_revocacion: FechaToken
-    fecha_creacion: FechaToken

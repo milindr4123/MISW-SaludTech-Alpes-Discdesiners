@@ -1,4 +1,5 @@
 import pulsar
+import uuid
 from pulsar.schema import *
 
 from hsm.modulos.semilla.infraestructura.schema.v1.eventos import EventoSemillaCreada, SemillaCreadaPayload
@@ -22,9 +23,11 @@ class Despachador:
         self._publicar_mensaje(evento, topico, AvroSchema(evento.__class__))
 
     def publicar_comando(self, comando, topico):
+        guid = uuid.uuid4()
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
         payload = ComandoCrearSemillaPayload(
-            seed=str(comando.seed)
+          
+            seed=str(guid)
             # agregar itinerarios
         )
         comando_integracion = ComandoCrearSemilla(data=payload)

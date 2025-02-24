@@ -1,10 +1,7 @@
-# from pydispatch import dispatcher
+from pydispatch import dispatcher
 
-# from .handlers import HandlerReservaIntegracion
+from .handlers import HandlerSemillaIntegracion
 
-# from aeroalpes.modulos.vuelos.dominio.eventos import ReservaCreada, ReservaCancelada, ReservaAprobada, ReservaPagada
+from hsm.modulos.semilla.dominio.eventos import SemillaCreada
 
-# dispatcher.connect(HandlerReservaIntegracion.handle_reserva_creada, signal=f'{ReservaCreada.__name__}Integracion')
-# dispatcher.connect(HandlerReservaIntegracion.handle_reserva_cancelada, signal=f'{ReservaCancelada.__name__}Integracion')
-# dispatcher.connect(HandlerReservaIntegracion.handle_reserva_pagada, signal=f'{ReservaPagada.__name__}Integracion')
-# dispatcher.connect(HandlerReservaIntegracion.handle_reserva_aprobada, signal=f'{ReservaAprobada.__name__}Integracion')
+dispatcher.connect(HandlerSemillaIntegracion.handle_semilla_creada, signal=f'{SemillaCreada.__name__}Integracion')

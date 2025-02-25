@@ -169,6 +169,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
 .vtoken
+.venv
+venv
 *.db
 data
+.bat

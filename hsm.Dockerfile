@@ -1,8 +1,13 @@
 FROM python:3.10
 
-COPY notificacion-requirements.txt ./
-RUN pip install --no-cache-dir -r hsm-requirements.txt
+EXPOSE 5000/tcp
+
+COPY requirements.txt ./
+RUN pip install --upgrade --no-cache-dir pip setuptools wheel
+RUN pip install --upgrade --no-cache-dir "pip<24.1"
+RUN pip install --no-cache-dir wheel
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-CMD [ "python", "./src/hsm/main.py" ]
+CMD [ "flask", "--app", "./src/hsm/api", "run", "--host=0.0.0.0"]

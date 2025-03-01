@@ -17,7 +17,7 @@ def suscribirse_a_eventos():
 
         while True:
             mensaje = consumidor.receive()
-            print(f'Evento recibido: {mensaje.value().data}')
+            print(f'eventos-token - Evento recibido OKR: {mensaje.value().data}')
 
             consumidor.acknowledge(mensaje)
 
@@ -36,7 +36,7 @@ def suscribirse_a_comandos():
 
         while True:
             mensaje = consumidor.receive()
-            print(f'Comando recibido: {mensaje.value().data}')
+            print(f'comandos-token - Comando recibido: {mensaje.value().data}')
 
             consumidor.acknowledge(mensaje)
 

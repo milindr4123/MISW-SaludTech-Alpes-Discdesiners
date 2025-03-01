@@ -1,0 +1,16 @@
+{
+    "solicitud_id": "abc123",
+    "datos_sensibles": {
+      "nombre": "Juan Pérez",
+      "fecha_nacimiento": "1990-01-01",
+      "direccion": "Calle Falsa 123",
+      "documento_id": "717888221"
+    },
+    "tipo_informacion": {
+      "modalidad": "radiografia",
+      "region_anatomica": "pierna",
+      "patologia": "astillada"
+    },
+    "imagen": "/bucket/to/image_1123312.png",
+    "timestamp": "2025-02-27T10:00:00Z"
+  }

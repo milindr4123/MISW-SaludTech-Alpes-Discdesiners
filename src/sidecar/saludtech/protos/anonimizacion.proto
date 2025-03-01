@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "co.edu.uniandes.misw4406";
+option java_outer_classname = "AnonimizacionProto";
+option objc_class_prefix = "ANON";
+
+package anonimizacion;
+
+// ------------------------------
+// Servicios
+// ------------------------------
+
+service AnonimizacionService {
+    rpc CrearAnonimizacion (Anonimizacion) returns (RespuestaAnonimizacion) {}
+    rpc ConsultarAnonimizacion (QueryAnonimizacion) returns (RespuestaAnonimizacion) {}
+}
+
+// ------------------------------
+// Entidades
+// ------------------------------
+
+message DatosSensibles {
+        string nombre = 1;
+        string fecha_nacimiento = 2;
+        string direccion = 3;
+        string documento_id = 4;
+}
+
+message TipoInformacion {
+        string modalidad = 1;
+        string region_anatomica = 2;
+        string patologia = 3;
+}
+
+message Anonimizacion {
+        string anonimizacion_id = 1;
+        DatosSensibles datos_sensibles = 2;
+        TipoInformacion tipo_informacion = 3;
+        string imagen = 4;
+        google.protobuf.Timestamp timestamp = 5;
+}
+
+message QueryAnonimizacion {
+        string anonimizacion_id = 1;
+}
+
+message RespuestaAnonimizacion {
+        string mensaje = 1;
+        optional Anonimizacion anonimizacion = 2;
+}

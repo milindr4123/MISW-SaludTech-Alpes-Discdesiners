@@ -26,6 +26,11 @@ El código está organizado siguiendo una **arquitectura hexagonal**, dividiendo
 
 ## 🚀 Funcionamiento del Sistema
 
+0. **Sidecard**
+   -El microservicio **sidecard** simula nuestro cliente 
+   - Para ejecutar corra python src/sidecar/main.py     y python src/sidecar/cliente.py  
+
+
 1. **Generación de Semilla**  
    - El **microservicio HSM** recibe una solicitud de semilla a través de un **endpoint REST**.  
    - La semilla se almacena de forma segura y se publica en **Pulsar**.  

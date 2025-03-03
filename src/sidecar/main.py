@@ -9,7 +9,7 @@ from saludtech.pb2py import anonimizacion_pb2_grpc
 from saludtech.servicios.anonimizacion import Anonimizacion
 
 def agregar_servicios(servidor):
-    anonimizacion_pb2_grpc.add_AnominizacionServicer_to_server(Anonimizacion(), servidor)
+    anonimizacion_pb2_grpc.add_AnonimizacionServiceServicer_to_server(Anonimizacion(), servidor)
 
 def serve():
     port = '50051'

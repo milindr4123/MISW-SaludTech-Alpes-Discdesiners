@@ -1,5 +1,5 @@
 from google.protobuf.timestamp_pb2 import Timestamp
-from saludtech.pb2py.anonimizacion_pb2 import DatosSensibles, TipoInformacion, Solicitud
+from saludtech.pb2py.anonimizacion_pb2 import DatosSensibles, TipoInformacion, Anonimizacion
 
 def dict_a_proto_datos_sensibles(dict_datos):
     return DatosSensibles(
@@ -20,7 +20,7 @@ def dict_a_proto_solicitud(dict_solicitud):
     timestamp = Timestamp()
     timestamp.FromJsonString(dict_solicitud.get('timestamp', ''))
     
-    return Solicitud(
+    return Anonimizacion(
         solicitud_id=dict_solicitud.get('solicitud_id', ''),
         datos_sensibles=dict_a_proto_datos_sensibles(dict_solicitud.get('datos_sensibles', {})),
         tipo_informacion=dict_a_proto_tipo_informacion(dict_solicitud.get('tipo_informacion', {})),

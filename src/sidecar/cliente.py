@@ -38,7 +38,7 @@ def run():
         json_dict = importar_comando_anonimizacion(json_file)
         anonimizacion = dict_a_proto_anonimizacion(json_dict)
 
-        stub = anonimizacion_pb2_grpc.AnonimizacionStub(channel)
+        stub = anonimizacion_pb2_grpc.AnonimizacionServiceStub(channel)
         response = stub.CrearAnonimizacion(anonimizacion)
     print("Greeter client received: " + response.mensaje)
     print(f'Anonimizacion: {response.anonimizacion}')

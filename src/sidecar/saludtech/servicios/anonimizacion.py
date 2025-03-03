@@ -6,12 +6,12 @@ import os
 from google.protobuf.json_format import MessageToDict
 from google.protobuf.timestamp_pb2 import Timestamp
 from saludtech.pb2py.anonimizacion_pb2 import Anonimizacion, RespuestaAnonimizacion
-from saludtech.pb2py.anonimizacion_pb2_grpc import AnonimizacionServicer
+from saludtech.pb2py.anonimizacion_pb2_grpc import AnonimizacionService
 from saludtech.utils import dict_a_proto_datos_sensibles, dict_a_proto_tipo_informacion
 
 TIMESTAMP_FORMAT = '%Y-%m-%dT%H:%M:%SZ'
 
-class Anonimizacion(AnonimizacionServicer):
+class Anonimizacion(AnonimizacionService):
     HOSTNAME_ENV: str = 'ANONIMIZACION_SERVICE_ADDRESS'
     REST_API_HOST: str = f'http://{os.getenv(HOSTNAME_ENV, default="localhost")}:5000'
     REST_API_ENDPOINT: str = '/anonimizaciones'

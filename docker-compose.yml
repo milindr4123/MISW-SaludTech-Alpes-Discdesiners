@@ -93,11 +93,11 @@ services:
       &&  exec bin/pulsar broker"
   
   # Servicios de AeroAlpes
-  aeroalpes:
-    container_name: aeroalpes
-    hostname: aeroalpes
-    image: aeroalpes/flask 
-    profiles: ["aeroalpes", "monolito"]
+  saludtech:
+    container_name: saludtech
+    hostname: saludtech
+    image: saludtech/flask 
+    profiles: ["saludtech", "monolito"]
     networks:
       - sidecar
       - pulsar
@@ -106,21 +106,21 @@ services:
     depends_on:
       - broker
     environment:
-      - AEROALPES_ADDRESS=aeroalpes
+      - SALUDTECH_ADDRESS=saludtech
       - PULSAR_ADDRESS=broker
     ports:
       - "5000:5000"
   adaptador:
-    image: "aeroalpes/adaptador"
-    profiles: ["aeroalpes", "monolito"]
+    image: "saludtech/adaptador"
+    profiles: ["saludtech", "monolito"]
     container_name: adaptador
     hostname: adaptador
     depends_on:
-      - aeroalpes
+      - saludtech
     networks:
       - sidecar
     environment:
-      - AEROALPES_ADDRESS=aeroalpes
+      - SALUDTECH_ADDRESS=saludtech
       - PULSAR_ADDRESS=broker
     ports:
       - "50051:50051"

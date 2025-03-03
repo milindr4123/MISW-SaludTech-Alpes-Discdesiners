@@ -5,6 +5,8 @@ from datetime import datetime
 class TokenCreadoComandoPayload(Record):
     id_solicitud = String()
     id_paciente = String()
+    fecha_creacion = Long()
+    fecha_actualizacion = Long()
 
 class EventoTokenComandoCreado(Record):
     data = TokenCreadoComandoPayload()
@@ -44,7 +46,9 @@ def crear_comando_payload(evento):
     """
     return TokenCreadoComandoPayload(
         id_solicitud=str(evento.id_solicitud),        
-        id_paciente=str(evento.id_paciente)
+        id_paciente=str(evento.id_paciente),
+        fecha_creacion = unix_time_millis(evento.fecha_creacion),
+        fecha_actualizacion = unix_time_millis(evento.fecha_creacion)
     )
 
 def enviar_mensaje_a_topico(evento, topico):
@@ -69,7 +73,7 @@ def enviar_mensaje_a_topico(evento, topico):
 
         # Enviar el mensaje
         productor.send(evento_integracion)
-        print(f"Mensaje enviado al tópico '{topico}' exitosamente.")
+        print(f"Mensaje enviado al tópico '{topico}' exitosamente. {evento_integracion}")
     finally:
         # Cerrar el cliente Pulsar
         cliente.close()

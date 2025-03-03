@@ -23,3 +23,7 @@ class Token(db.Model):
     token_anonimo = db.Column(db.String(255), nullable=True)
     fecha_creacion = db.Column(db.DateTime, nullable=False)
 
+class ReservaToken(db.Model):
+    __tablename__ = "token_reservas"
+    fecha_creacion = db.Column(db.Date, primary_key=True)
+    total = db.Column(db.Integer, primary_key=True, nullable=False)

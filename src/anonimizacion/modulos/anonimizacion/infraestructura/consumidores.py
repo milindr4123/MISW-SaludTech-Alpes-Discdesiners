@@ -12,6 +12,8 @@ from anonimizacion.seedwork.infraestructura import utils
 from anonimizacion.modulos.anonimizacion.aplicacion.mapeadores import MapeadorToken
 from anonimizacion.seedwork.aplicacion.comandos import ejecutar_commando
 from anonimizacion.modulos.anonimizacion.aplicacion.comandos.crear_token import CrearToken
+from anonimizacion.seedwork.infraestructura.proyecciones import ejecutar_proyeccion
+from anonimizacion.modulos.anonimizacion.infraestructura.proyecciones import ProyeccionTokenLista, ProyeccionTokenTotales
 
 def suscribirse_a_eventos():
     cliente = None
@@ -50,7 +52,7 @@ def crear_evento(dato):
     except Exception as e:
         return print(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
-def suscribirse_a_comandos():
+def suscribirse_a_comandos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
@@ -58,13 +60,19 @@ def suscribirse_a_comandos():
 
         while True:
             mensaje = consumidor.receive()
-            print(f'anonimizacion-solicitud - Comando recibido: {mensaje.value().data}')
-            crear_evento(mensaje.value().data)
+            datos = mensaje.value().data
+            print(f'anonimizacion-solicitud - Comando recibido: {datos}')
+            
+            ## persistencia db
+            ejecutar_proyeccion(ProyeccionTokenTotales(datos.fecha_creacion, ProyeccionTokenTotales.ADD), app=app)
+            ejecutar_proyeccion(ProyeccionTokenLista(datos.id_solicitud, datos.id_paciente, datos.fecha_creacion), app=app)
+            
+            crear_evento(datos)
 
             consumidor.acknowledge(mensaje)
 
         cliente.close()
-    except:
+    except Exception as e:
         logging.error('ERROR: Suscribiendose al tópico de comandos!')
         traceback.print_exc()
         if cliente:

@@ -15,7 +15,7 @@ from .excepciones import NoExisteImplementacionParaTipoFabricaExcepcion
 @dataclass
 class FabricaRepositorio(Fabrica):
     def crear_objeto(self, obj: type, mapeador: any = None) -> Repositorio:
-        if obj == RepositorioTokens.__class__:
+        if obj == RepositorioTokens:
             return RepositorioTokensSQLite()
         else:
             raise NoExisteImplementacionParaTipoFabricaExcepcion()

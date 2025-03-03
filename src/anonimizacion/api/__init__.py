@@ -20,13 +20,13 @@ def comenzar_consumidor():
     """
 
     import threading
-    import anonimizacion.modulos.anonimizacion.infraestructura.consumidores as token_consumidores
+    import anonimizacion.modulos.anonimizacion.infraestructura.consumidores as anonimizador_consumidores
 
     # Suscripción a eventos
-    threading.Thread(target=token_consumidores.suscribirse_a_eventos).start()
+    threading.Thread(target=anonimizador_consumidores.suscribirse_a_eventos).start()
 
     # Suscripción a comandos
-    threading.Thread(target=token_consumidores.suscribirse_a_comandos).start()
+    threading.Thread(target=anonimizador_consumidores.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask

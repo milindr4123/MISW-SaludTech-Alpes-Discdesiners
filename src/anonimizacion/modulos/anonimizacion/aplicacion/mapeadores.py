@@ -1,3 +1,4 @@
+from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.comandos import CrearTokenPayload
 from anonimizacion.seedwork.aplicacion.dto import Mapeador as AppMap
 from anonimizacion.seedwork.dominio.repositorios import Mapeador as RepMap
 from anonimizacion.modulos.anonimizacion.dominio.entidades import Token
@@ -51,5 +52,11 @@ class MapeadorToken(RepMap):
            
             print(f"Ocurrió un error: {e}")
         
-        
+    def payload_a_dto(self, CrearTokenPayload:CrearTokenPayload) -> TokenDTO:
+        return TokenDTO(
+            id= CrearTokenPayload.id_solicitud,
+            fecha_creacion= datetime.now(),
+            id_solicitud= CrearTokenPayload.id_solicitud,
+            id_paciente = CrearTokenPayload.id_paciente
+        )
         

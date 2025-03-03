@@ -6,6 +6,7 @@ import uuid
 
 @dataclass
 class TokenCreado(EventoDominio):
+    id_solicitud: uuid.UUID = None
     id_paciente: uuid.UUID = None
     token_anonimo: str = None
     fecha_creacion: datetime = None

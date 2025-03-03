@@ -18,9 +18,13 @@ class TextoToken(ObjetoValor):
 
 class IdPaciente(ObjetoValor):
     id_paciente:str
+    
+class IdSolicitud(ObjetoValor):
+    id_solicitud:str
 
 @dataclass(frozen=True)
 class Token(ObjetoValor):
     token: TextoToken
+    id_solicitud : IdSolicitud
     id_paciente: IdPaciente
     fecha_creacion: datetime = datetime.now()

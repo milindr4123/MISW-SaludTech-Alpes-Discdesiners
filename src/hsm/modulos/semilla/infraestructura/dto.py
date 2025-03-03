@@ -35,7 +35,7 @@ class EventosSemilla(db.Model):
     nombre_servicio = db.Column(db.String(40), nullable=False)
     contenido = db.Column(db.Text, nullable=False)
 
-class ReservaAnalitica(db.Model):
+class SemillaAnalitica(db.Model):
     __tablename__ = "analitica_reservas"
     fecha_creacion = db.Column(db.Date, primary_key=True)
     total = db.Column(db.Integer, primary_key=True, nullable=False)

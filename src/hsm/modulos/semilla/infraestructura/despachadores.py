@@ -1,3 +1,13 @@
+import sys
+import os
+
+# Obtener la ruta base del proyecto
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+
+# Agregar la carpeta src al sys.path
+sys.path.append(os.path.join(BASE_DIR, "src"))
+
+
 import pulsar
 import uuid
 from pulsar.schema import *
@@ -14,7 +24,10 @@ class Despachador:
 
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoSemillaCreada))
+        print("margarita")
+        print(EventoSemillaCreada)
+        print(utils.broker_host())
+        publicador = cliente.create_producer(topico, schema=schema)
         publicador.send(mensaje)
         cliente.close()
 
@@ -23,12 +36,10 @@ class Despachador:
         self._publicar_mensaje(evento, topico, AvroSchema(evento.__class__))
 
     def publicar_comando(self, comando, topico):
-        guid = uuid.uuid4()
-        # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
         payload = ComandoCrearSemillaPayload(
-          
-            seed=str(guid)
-            # agregar itinerarios
+            format=comando.formato,  # Usar datos del comando recibido
+            length=comando.length
         )
         comando_integracion = ComandoCrearSemilla(data=payload)
         self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearSemilla))
+

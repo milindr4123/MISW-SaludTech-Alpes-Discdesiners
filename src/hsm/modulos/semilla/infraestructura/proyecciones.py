@@ -1,9 +1,9 @@
 from hsm.seedwork.infraestructura.proyecciones import Proyeccion, ProyeccionHandler
 from hsm.seedwork.infraestructura.proyecciones import ejecutar_proyeccion as proyeccion
 from hsm.modulos.semilla.infraestructura.fabricas import FabricaRepositorio
-from hsm.modulos.semilla.infraestructura.repositorios import RepositorioReservas
-from hsm.modulos.semilla.dominio.entidades import Reserva
-from hsm.modulos.semilla.infraestructura.dto import Reserva as ReservaDTO
+from hsm.modulos.semilla.infraestructura.repositorios import RepositorioSemilla
+from hsm.modulos.semilla.dominio.entidades import Semilla
+from hsm.modulos.semilla.infraestructura.dto import Semilla as SemillaDTO
 
 from hsm.seedwork.infraestructura.utils import millis_a_datetime
 import datetime
@@ -56,7 +56,7 @@ class ProyeccionSemillaLista(ProyeccionSemilla):
             return
         
         fabrica_repositorio = FabricaRepositorio()
-        repositorio = fabrica_repositorio.crear_objeto(RepositorioSemillas)
+        repositorio = fabrica_repositorio.crear_objeto(RepositorioSemilla)
         
         # TODO Haga los cambios necesarios para que se consideren los itinerarios, demás entidades y asociaciones
         repositorio.agregar(

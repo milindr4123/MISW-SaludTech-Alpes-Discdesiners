@@ -12,7 +12,7 @@ from hsm.seedwork.infraestructura.vistas import Vista
 from hsm.modulos.semilla.infraestructura.vistas import VistaSemilla
 from hsm.modulos.semilla.dominio.entidades import Semilla
 from hsm.modulos.semilla.dominio.repositorios import  RepositorioSemilla, RepositorioEventosSemilla
-from .repositorios import RepositorioSemillaSQLAlchemy, RepositorioProveedoresSQLAlchemy, RepositorioEventosReservaSQLAlchemy
+from .repositorios import RepositorioSemillaSQLAlchemy,  RepositorioEventosSemillasSQLAlchemy
 from .excepciones import ExcepcionFabrica
 
 @dataclass

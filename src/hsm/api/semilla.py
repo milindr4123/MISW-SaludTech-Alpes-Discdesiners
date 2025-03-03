@@ -24,6 +24,7 @@ def generar_semilla_usando_comando():
         
         # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura
+        print(comando)
         despachador.publicar_comando(comando, "comandos-semilla")   
 
         return Response('{}', status=202, mimetype='application/json')

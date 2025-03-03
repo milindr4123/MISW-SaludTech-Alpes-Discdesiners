@@ -8,7 +8,7 @@ import datetime
 
 from hsm.modulos.semilla.infraestructura.schema.v1.eventos import EventoSemillaCreada
 from hsm.modulos.semilla.infraestructura.schema.v1.comandos import ComandoCrearSemilla
-
+from hsm.modulos.semilla.infraestructura.despachadores import Despachador
 
 from hsm.modulos.semilla.infraestructura.proyecciones import ProyeccionSemillaLista, ProyeccionSemillasTotales
 from hsm.seedwork.infraestructura.proyecciones import ejecutar_proyeccion
@@ -44,10 +44,17 @@ def suscribirse_a_comandos(app=None):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
         consumidor = cliente.subscribe('comandos-semilla', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='hsm-sub-comandos', schema=AvroSchema(ComandoCrearSemilla))
 
+        # Crear la instancia del despachador aquí
+        despachador = Despachador()
         while True:
             mensaje = consumidor.receive()
             print(f'Comando recibido: {mensaje.value().data}')
 
+            # Aquí puedes acceder al comando recibido y pasar los datos necesarios a la lógica de proyección
+            comando = mensaje.value().data  # El comando está dentro de 'mensaje.value().data'
+            # Llamar al despachador para publicar el comando
+            despachador.publicar_comando(comando, 'comandos-semilla')  # Publicar en el tópico de comandos
+            
             consumidor.acknowledge(mensaje)     
             
         cliente.close()

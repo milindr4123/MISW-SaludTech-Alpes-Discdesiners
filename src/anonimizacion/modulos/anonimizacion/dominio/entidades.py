@@ -15,15 +15,18 @@ from anonimizacion.modulos.anonimizacion.dominio.eventos import TokenCreado
     
 @dataclass
 class Token(AgregacionRaiz):
+    id_solicitud: uuid.UUID = field(default_factory=uuid.uuid4)
     id_paciente: uuid.UUID = field(default_factory=uuid.uuid4)
     token_anonimo: ov.TextoToken = field(default_factory=ov.TextoToken)
     # fecha_creacion: ov.FechaToken = field(default_factory=ov.FechaToken)
     
     
     def crear_token(self, token:Token):
+        self.id_solicitud = token.id_solicitud
         self.id_paciente = token.id_paciente
         self.token_anonimo = token.token_anonimo
         self.agregar_evento(TokenCreado(
+            id_solicitud=self.id_solicitud,
             id_paciente=self.id_paciente,
             token_anonimo=self.token_anonimo,
             fecha_creacion=self.fecha_creacion))

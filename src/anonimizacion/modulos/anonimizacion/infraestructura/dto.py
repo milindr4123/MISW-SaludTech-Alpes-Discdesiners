@@ -18,7 +18,12 @@ Base = db.declarative_base()
 class Token(db.Model):
     __tablename__ = "tokens"
     id = db.Column(db.String(255), primary_key=True, default=lambda: str(uuid.uuid4()))
+    id_solicitud = db.Column(db.String(255), primary_key=True, default=lambda: str(uuid.uuid4()))
     id_paciente = db.Column(db.String(255), nullable=False)
     token_anonimo = db.Column(db.String(255), nullable=True)
     fecha_creacion = db.Column(db.DateTime, nullable=False)
 
+class ReservaToken(db.Model):
+    __tablename__ = "token_reservas"
+    fecha_creacion = db.Column(db.Date, primary_key=True)
+    total = db.Column(db.Integer, primary_key=True, nullable=False)

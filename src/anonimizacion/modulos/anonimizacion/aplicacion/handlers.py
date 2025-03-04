@@ -7,9 +7,9 @@ class HandlerTokenIntegracion(Handler):
     @staticmethod
     def handle_token_creado(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-token')
+        despachador.publicar_evento(evento, 'anonimizacion-solicitud')
 
     @staticmethod
     def handle_token_cancelado(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-token')
+        despachador.publicar_evento(evento, 'anonimizacion-solicitud')

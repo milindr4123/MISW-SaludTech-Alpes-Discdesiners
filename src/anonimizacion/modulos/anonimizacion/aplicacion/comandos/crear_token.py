@@ -11,7 +11,8 @@ from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import Rep
 
 @dataclass
 class CrearToken(Comando):
-    id: str
+    id:str
+    id_solicitud: str
     id_paciente : str
     token_anonimo : str
     fecha_creacion: str
@@ -21,6 +22,7 @@ class CrearTokenHandler(CrearTokenBaseHandler):
     def handle(self, comando: CrearToken):
         token_dto = TokenDTO(
                 id=comando.id,
+                id_solicitud=comando.id_solicitud,
                 id_paciente =comando.id_paciente,
                 token_anonimo =comando.token_anonimo,
                 fecha_creacion =comando.fecha_creacion)

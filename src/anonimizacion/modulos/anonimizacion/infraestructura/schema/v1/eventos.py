@@ -2,7 +2,7 @@ from pulsar.schema import *
 from anonimizacion.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
 
 class TokenCreadoPayload(Record):
-    id = String()
+    id_solicitud = String()
     id_paciente = String()
     token_anonimo = String()
     fecha_creacion = Long()

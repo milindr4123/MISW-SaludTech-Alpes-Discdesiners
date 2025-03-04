@@ -53,7 +53,7 @@ def suscribirse_a_comandos(app=None):
             # Aquí puedes acceder al comando recibido y pasar los datos necesarios a la lógica de proyección
             comando = mensaje.value().data  # El comando está dentro de 'mensaje.value().data'
             # Llamar al despachador para publicar el comando
-            despachador.publicar_comando(comando, 'comandos-semilla')  # Publicar en el tópico de comandos
+            # despachador.publicar_comando(comando, 'comandos-semilla')  # Publicar en el tópico de comandos
             
             consumidor.acknowledge(mensaje)     
             

@@ -100,10 +100,14 @@ El código está organizado siguiendo una **arquitectura hexagonal**, dividiendo
 📊 **Medición**: Tiempo de respuesta menor a **2 segundos** por solicitud.
 
 
-📌 Contribuciones del Equipo
-Nombre	Responsabilidad
-Miguel Parra	Implementó el servicio de Tokenización y Anonimización. Desarrolló el cliente Sidecard.
-William Ballesteros	Completó el servicio de Anonimización y coordinó el manejador de la base de datos.
-Margarita Forero	Desarrolló el servicio HSM para la generación y gestión de semillas criptográficas.
-Todos	Trabajaron en la integración del sistema, en la documentación y en la grabación del video de demostración.
+## 📌 Contribuciones del Equipo  
+
+| **Nombre**             | **Responsabilidad**  |
+|------------------------|---------------------|
+| **Miguel Parra**       | Desarrolló el **cliente Sidecard**.  |
+| **William Ballesteros**| Completó el servicio de **Anonimización** y coordinó el **manejador de la base de datos**.  |
+| **Margarita Forero**   | Desarrolló el **servicio HSM** para la generación y gestión de semillas criptográficas.  |
+| **Oscar Ramirez**             | Implementó el servicio de **Tokenización y Anonimización**.  |
+| **Todos**             | Trabajaron en la **integración del sistema**, en la **documentación** y en la **grabación del video de demostración**.  |
+
 

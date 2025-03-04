@@ -93,7 +93,17 @@ El código está organizado siguiendo una **arquitectura hexagonal**, dividiendo
 ✅ **Balanceo de carga en ingesta y procesamiento**: Se optimiza el flujo de datos.  
 📊 **Medición**: Latencia menor a **5 minutos** por lote de **500 GB**.
 
+
 ### 5️⃣ Escalabilidad - Distribución de datos a clientes
 ✅ **Bases de datos distribuidas con caching (Redis, DynamoDB)**: Mejora los tiempos de respuesta.  
 ✅ **Uso de API Gateway con balanceo de carga**: Optimiza la entrega de datos concurrentes.  
 📊 **Medición**: Tiempo de respuesta menor a **2 segundos** por solicitud.
+
+
+📌 Contribuciones del Equipo
+Nombre	Responsabilidad
+Miguel Parra	Implementó el servicio de Tokenización y Anonimización. Desarrolló el cliente Sidecard.
+William Ballesteros	Completó el servicio de Anonimización y coordinó el manejador de la base de datos.
+Margarita Forero	Desarrolló el servicio HSM para la generación y gestión de semillas criptográficas.
+Todos	Trabajaron en la integración del sistema, en la documentación y en la grabación del video de demostración.
+

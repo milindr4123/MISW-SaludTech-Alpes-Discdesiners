@@ -62,7 +62,8 @@ class ProyeccionTokenLista(ProyeccionToken):
             Token(
                 id_solicitud=str(self.id_solciitud), 
                 id_paciente=str(self.id_paciente), 
-                fecha_actualizacion=self.fecha_actualizacion))
+                fecha_actualizacion=self.fecha_actualizacion,
+                token_anonimo=''))
         
         # TODO ¿Y si la reserva ya existe y debemos actualizarla? Complete el método para hacer merge
 

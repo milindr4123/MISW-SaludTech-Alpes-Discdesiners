@@ -6,16 +6,26 @@ objetos complejos en la capa de infraestructura del dominio de tokenización
 """
 
 from dataclasses import dataclass
+from anonimizacion.modulos.anonimizacion.dominio.entidades import Anonimizacion
+from anonimizacion.modulos.anonimizacion.infraestructura.vistas import VistaAnonimizacion
 from anonimizacion.seedwork.dominio.fabricas import Fabrica
 from anonimizacion.seedwork.dominio.repositorios import Repositorio
-from anonimizacion.modulos.anonimizacion.dominio.repositorios import RepositorioTokens
-from .repositorios import RepositorioTokensSQLite
-from .excepciones import NoExisteImplementacionParaTipoFabricaExcepcion
+from anonimizacion.modulos.anonimizacion.dominio.repositorios import RepositorioAnonimizacion
+from .repositorios import RepositorioAnonimizacionSQLite
+from .excepciones import NoExisteImplementacionParaTipoFabricaExcepcion, ExcepcionFabrica
 
 @dataclass
 class FabricaRepositorio(Fabrica):
     def crear_objeto(self, obj: type, mapeador: any = None) -> Repositorio:
-        if obj == RepositorioTokens:
-            return RepositorioTokensSQLite()
+        if obj == RepositorioAnonimizacion:
+            return RepositorioAnonimizacionSQLite()
         else:
             raise NoExisteImplementacionParaTipoFabricaExcepcion()
+        
+@dataclass
+class FabricaVista(Fabrica):
+    def crear_objeto(self, obj: type, mapeador: any = None) -> Vista:
+        if obj == Anonimizacion:
+            return VistaAnonimizacion()
+        else:
+            raise ExcepcionFabrica(f'No existe fábrica para el objeto {obj}')

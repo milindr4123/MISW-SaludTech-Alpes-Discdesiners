@@ -7,6 +7,8 @@ class CrearTokenPayload(ComandoIntegracion):
     id_paciente = String()
     fecha_creacion = Long()
     fecha_actualizacion = Long()
+    estado = String()
+    token_anonimo = String()
     # Agrega otros campos necesarios para el comando
 
 class ComandoCrearToken(ComandoIntegracion):

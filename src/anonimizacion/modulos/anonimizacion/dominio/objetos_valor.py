@@ -21,6 +21,9 @@ class IdPaciente(ObjetoValor):
     
 class IdSolicitud(ObjetoValor):
     id_solicitud:str
+    
+class TextoEstado(ObjetoValor):
+    estado:str
 
 @dataclass(frozen=True)
 class Token(ObjetoValor):
@@ -28,3 +31,11 @@ class Token(ObjetoValor):
     id_solicitud : IdSolicitud
     id_paciente: IdPaciente
     fecha_creacion: datetime = datetime.now()
+    fecha_actualizacion: datetime = datetime.now()
+    estado: TextoEstado
+
+class EstadoAnonimizacion(str, Enum):
+    CREADO = "CREADO"
+    APROBADO = "APROBADO"
+    FALLIDO = "FALLIDO"
+    COMPENSADO = "COMPENSADO"

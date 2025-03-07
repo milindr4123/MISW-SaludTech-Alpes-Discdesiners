@@ -1,17 +1,17 @@
 from anonimizacion.seedwork.aplicacion.queries import Query, QueryHandler, QueryResultado
-from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import RepositorioTokens
-from anonimizacion.modulos.anonimizacion.aplicacion.mapeadores import MapeadorToken
-from .base import TokenQueryBaseHandler
+from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import RepositorioAnonimizacion
+from anonimizacion.modulos.anonimizacion.aplicacion.mapeadores import MapeadorAnonimizacion
+from .base import AnonimizacionQueryBaseHandler
 from dataclasses import dataclass
 
 @dataclass
-class ObtenerTokensCancelados(Query):
+class ObtenerAnonimizacionCancelados(Query):
     ...
 
-class ObtenerTokensCanceladosHandler(TokenQueryBaseHandler):
+class ObtenerAnonimizacionCanceladosHandler(AnonimizacionQueryBaseHandler):
 
-    def handle(self, query: ObtenerTokensCancelados) -> QueryResultado:
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioTokens.__class__)
-        tokens_cancelados = repositorio.obtener_tokens_cancelados()
-        tokens_dto = [self.fabrica_tokens.crear_objeto(token, MapeadorToken()) for token in tokens_cancelados]
-        return QueryResultado(resultado=tokens_dto)
+    def handle(self, query: ObtenerAnonimizacionCancelados) -> QueryResultado:
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioAnonimizacion.__class__)
+        anonimizacion_cancelados = repositorio.obtener_anonimizacion_cancelados()
+        anonimizacion_dto = [self.fabrica_anonimizacion.crear_objeto(anonimizacion, MapeadorAnonimizacion()) for anonimizacion in anonimizacion_cancelados]
+        return QueryResultado(resultado=anonimizacion_dto)

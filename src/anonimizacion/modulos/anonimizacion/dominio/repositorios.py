@@ -8,6 +8,8 @@ del dominio de vuelos
 from abc import ABC
 from anonimizacion.seedwork.dominio.repositorios import Repositorio
 
-class RepositorioTokens(Repositorio, ABC):
+class RepositorioAnonimizacion(Repositorio, ABC):
     ...
 
+class RepositorioEventosAnonimizacion(Repositorio, ABC):
+    ...

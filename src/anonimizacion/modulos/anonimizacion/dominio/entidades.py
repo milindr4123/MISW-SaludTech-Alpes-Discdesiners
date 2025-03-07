@@ -5,7 +5,7 @@ from datetime import datetime
 
 import anonimizacion.modulos.anonimizacion.dominio.objetos_valor as ov
 from anonimizacion.seedwork.dominio.entidades import AgregacionRaiz, Entidad
-from anonimizacion.modulos.anonimizacion.dominio.eventos import TokenCreado
+from anonimizacion.modulos.anonimizacion.dominio.eventos import  AnonimizacionAprobada, AnonimizacionCreada, AnonimizacionFallida
     
 # @dataclass
 # class TokenAnonimizacion(Entidad):
@@ -14,19 +14,42 @@ from anonimizacion.modulos.anonimizacion.dominio.eventos import TokenCreado
 #     fecha_generacion: datetime = field(default_factory=datetime.utcnow)
     
 @dataclass
-class Token(AgregacionRaiz):
+class Anonimizacion(AgregacionRaiz):
     id_solicitud: uuid.UUID = field(default_factory=uuid.uuid4)
     id_paciente: uuid.UUID = field(default_factory=uuid.uuid4)
     token_anonimo: ov.TextoToken = field(default_factory=ov.TextoToken)
-    # fecha_creacion: ov.FechaToken = field(default_factory=ov.FechaToken)
+    estado: ov.TextoToken = field(default_factory=ov.EstadoAnonimizacion.CREADO)
+    fecha_creacion: ov.FechaToken = field(default_factory=ov.FechaToken)
+    fecha_actualizacion: ov.FechaToken = field(default_factory=ov.FechaToken)
     
     
-    def crear_token(self, token:Token):
-        self.id_solicitud = token.id_solicitud
-        self.id_paciente = token.id_paciente
-        self.token_anonimo = token.token_anonimo
-        self.agregar_evento(TokenCreado(
+    def crear_anonimizacion(self, anonimizacion:Anonimizacion):
+        self.id_solicitud = anonimizacion.id_solicitud
+        self.id_paciente = anonimizacion.id_paciente
+        self.token_anonimo = ""
+        self.estado = ov.EstadoAnonimizacion.CREADO
+        self.fecha_creacion = datetime.datetime.now()
+        self.fecha_actualizacion = datetime.datetime.now()
+        self.agregar_evento(AnonimizacionCreada(
             id_solicitud=self.id_solicitud,
             id_paciente=self.id_paciente,
             token_anonimo=self.token_anonimo,
-            fecha_creacion=self.fecha_creacion))
+            estado=self.estado,
+            fecha_creacion=self.fecha_creacion,
+            fecha_actualizacion=self.fecha_actualizacion))
+        
+    def aprobar_anonimizacion(self):
+        self.estado = ov.EstadoAnonimizacion.APROBADO
+        self.fecha_actualizacion = datetime.datetime.now()
+        self.agregar_evento(AnonimizacionAprobada(
+            id_solicitud=self.id_solicitud,
+            estado=self.estado,
+            fecha_actualizacion=self.fecha_actualizacion))
+        
+    def fallar_anonimizacion(self):
+        self.estado = ov.EstadoAnonimizacion.FALLIDO
+        self.fecha_actualizacion = datetime.datetime.now()
+        self.agregar_evento(AnonimizacionFallida(
+            id_solicitud=self.id_solicitud,
+            estado=self.estado,
+            fecha_actualizacion=self.fecha_actualizacion))

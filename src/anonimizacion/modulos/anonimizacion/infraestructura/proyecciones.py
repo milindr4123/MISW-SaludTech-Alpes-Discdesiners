@@ -3,7 +3,7 @@ from anonimizacion.seedwork.infraestructura.proyecciones import ejecutar_proyecc
 from anonimizacion.modulos.anonimizacion.infraestructura.fabricas import FabricaRepositorio
 from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import RepositorioTokens
 from anonimizacion.modulos.anonimizacion.dominio.entidades import Token
-from anonimizacion.modulos.anonimizacion.infraestructura.dto import Token as TokenDTO
+from anonimizacion.modulos.anonimizacion.infraestructura.dto import Anonimizacion as AnonimizacionDTO
 
 from anonimizacion.seedwork.infraestructura.utils import millis_a_datetime
 import datetime

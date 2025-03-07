@@ -1,17 +1,18 @@
 from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.comandos import CrearTokenPayload
 from anonimizacion.seedwork.aplicacion.dto import Mapeador as AppMap
 from anonimizacion.seedwork.dominio.repositorios import Mapeador as RepMap
-from anonimizacion.modulos.anonimizacion.dominio.entidades import Token
-from .dto import TokenDTO
+from anonimizacion.modulos.anonimizacion.dominio.entidades import Anonimizacion
+from .dto import AnonimizacionDTO
 
 from datetime import datetime
 
-class MapeadorTokenDTOJson(AppMap):
+class MapeadorAnonimizacionDTOJson(AppMap):
     
     
-    def externo_a_dto(self, externo: dict) -> TokenDTO:
-        token_dto = TokenDTO(
+    def externo_a_dto(self, externo: dict) -> AnonimizacionDTO:
+        anonimizacion_dto = AnonimizacionDTO(
             id = externo.get('id'), 
+            id_solicitud= externo.get('id_solicitud'),
             id_paciente= externo.get('id_paciente'),
             token_anonimo = externo.get('token_anonimo'),
             fecha_creacion= externo.get('fecha_creacion')
@@ -22,38 +23,41 @@ class MapeadorTokenDTOJson(AppMap):
         # token_dto.token_anonimo = externo.get('token_anonimo')
         # token_dto.fecha_creacion = externo.get('fecha_creacion')
         # token_dto.id = externo.get('id')
-        return token_dto
+        return anonimizacion_dto
 
-    def dto_a_externo(self, dto: TokenDTO) -> dict:
+    def dto_a_externo(self, dto: AnonimizacionDTO) -> dict:
         return dto.__dict__
 
-class MapeadorToken(RepMap):
+class MapeadorAnonimizacion(RepMap):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
     def obtener_tipo(self) -> type:
-        return Token.__class__
+        return Anonimizacion.__class__
 
-    def entidad_a_dto(self, entidad: Token) -> TokenDTO:
+    def entidad_a_dto(self, entidad: Anonimizacion) -> AnonimizacionDTO:
         fecha_creacion = entidad.fecha_creacion.strftime(self._FORMATO_FECHA)
         _id = str(entidad.id)
         token_anonimo = str(entidad.token_anonimo)
         id_paciente = str(entidad.id_paciente)
+        id_solicitud = str(entidad.id_solicitud)
 
         
-        return TokenDTO(_id, id_paciente, token_anonimo, fecha_creacion)
+        return AnonimizacionDTO(_id, id_solicitud, id_paciente, token_anonimo, fecha_creacion)
 
-    def dto_a_entidad(self, dto: TokenDTO) -> Token:
+    def dto_a_entidad(self, dto: AnonimizacionDTO) -> Anonimizacion:
         try:
-            token = Token()
-            token.id_paciente = dto.id_paciente
-            token.token_anonimo = dto.token_anonimo
-            return token
+            anonimizacion = Anonimizacion()
+            anonimizacion.id_paciente = dto.id_paciente
+            anonimizacion.id_solicitud = dto.id_solicitud
+            anonimizacion.token_anonimo = dto.token_anonimo
+            anonimizacion.fecha_creacion = datetime.strptime(dto.fecha_creacion, self._FORMATO_FECHA)
+            return anonimizacion
         except Exception as e:
            
             print(f"Ocurrió un error: {e}")
         
-    def payload_a_dto(self, CrearTokenPayload:CrearTokenPayload) -> TokenDTO:
-        return TokenDTO(
+    def payload_a_dto(self, CrearTokenPayload:CrearTokenPayload) -> AnonimizacionDTO:
+        return AnonimizacionDTO(
             id= CrearTokenPayload.id_solicitud,
             fecha_creacion= datetime.now(),
             id_solicitud= CrearTokenPayload.id_solicitud,

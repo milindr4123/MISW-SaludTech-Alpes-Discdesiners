@@ -5,31 +5,31 @@ objetos complejos del dominio de tokenización
 
 """
 
-from .entidades import Token
+from .entidades import Anonimizacion
 from .reglas import TextoTokenValido
-from .excepciones import TipoObjetoNoExisteEnDominioTokenizacionExcepcion
+from .excepciones import TipoObjetoNoExisteEnDominioAnonimizacionExcepcion
 from anonimizacion.seedwork.dominio.repositorios import Mapeador, Repositorio
 from anonimizacion.seedwork.dominio.fabricas import Fabrica
 from anonimizacion.seedwork.dominio.entidades import Entidad
 from dataclasses import dataclass
 
 @dataclass
-class _FabricaToken(Fabrica):
+class _FabricaAnonimizacion(Fabrica):
     def crear_objeto(self, obj: any, mapeador: Mapeador) -> any:
         if isinstance(obj, Entidad):
             return mapeador.entidad_a_dto(obj)
         else:
-            token: Token = mapeador.dto_a_entidad(obj)
+            anonimizacion: Anonimizacion = mapeador.dto_a_entidad(obj)
 
             # self.validar_regla(TextoTokenValido(token))
             
-            return token
+            return anonimizacion
 
 @dataclass
-class FabricaTokenizacion(Fabrica):
+class FabricaAnonimizacion(Fabrica):
     def crear_objeto(self, obj: any, mapeador: Mapeador) -> any:
-        if mapeador.obtener_tipo() == Token.__class__:
-            fabrica_token = _FabricaToken()
-            return fabrica_token.crear_objeto(obj, mapeador)
+        if mapeador.obtener_tipo() == Anonimizacion.__class__:
+            fabrica_anonimizacion = _FabricaAnonimizacion()
+            return fabrica_anonimizacion.crear_objeto(obj, mapeador)
         else:
-            raise TipoObjetoNoExisteEnDominioTokenizacionExcepcion()
+            raise TipoObjetoNoExisteEnDominioAnonimizacionExcepcion()

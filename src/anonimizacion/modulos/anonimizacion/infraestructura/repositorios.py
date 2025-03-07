@@ -6,14 +6,14 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 """
 
 from anonimizacion.config.db import db
-from anonimizacion.modulos.anonimizacion.dominio.repositorios import RepositorioTokens
-from anonimizacion.modulos.anonimizacion.dominio.entidades import Token
+from anonimizacion.modulos.anonimizacion.dominio.repositorios import RepositorioAnonimizacion
+from anonimizacion.modulos.anonimizacion.dominio.entidades import Anonimizacion
 from anonimizacion.modulos.anonimizacion.dominio.fabricas import FabricaTokenizacion
-from .dto import Token as TokenDTO
+from .dto import Anonimizacion as AnonimizacionDTO
 from .mapeadores import MapeadorToken
 from uuid import UUID
 
-class RepositorioTokensSQLite(RepositorioTokens):
+class RepositorioAnonimizacionSQLite(RepositorioAnonimizacion):
 
     def __init__(self):
         self._fabrica_anonimizacion: FabricaTokenizacion = FabricaTokenizacion()
@@ -22,26 +22,26 @@ class RepositorioTokensSQLite(RepositorioTokens):
     def fabrica_anonimizacion(self):
         return self._fabrica_anonimizacion
 
-    def obtener_por_id(self, id: UUID) -> Token:
-        token_dto = db.session.query(TokenDTO).filter_by(id=str(id)).one()
-        return self.fabrica_anonimizacion.crear_objeto(token_dto, MapeadorToken())
+    def obtener_por_id(self, id: UUID) -> Anonimizacion:
+        anonimizacion_dto = db.session.query(AnonimizacionDTO).filter_by(id=str(id)).one()
+        return self.fabrica_anonimizacion.crear_objeto(anonimizacion_dto, MapeadorToken())
 
-    def obtener_todos(self) -> list[Token]:
-        tokens_dto = db.session.query(TokenDTO).all()
-        return [self.fabrica_anonimizacion.crear_objeto(token_dto, MapeadorToken()) for token_dto in tokens_dto]
+    def obtener_todos(self) -> list[Anonimizacion]:
+        tokens_dto = db.session.query(AnonimizacionDTO).all()
+        return [self.fabrica_anonimizacion.crear_objeto(anonimizacion_dto, MapeadorToken()) for anonimizacion_dto in tokens_dto]
 
-    def agregar(self, token: Token):
-        token_dto = self.fabrica_anonimizacion.crear_objeto(token, MapeadorToken())
-        db.session.add(token_dto)
+    def agregar(self, token: Anonimizacion):
+        anonimizacion_dto = self.fabrica_anonimizacion.crear_objeto(token, MapeadorToken())
+        db.session.add(anonimizacion_dto)
         db.session.commit()
 
-    def actualizar(self, token: Token):
-        token_dto = self.fabrica_anonimizacion.crear_objeto(token, MapeadorToken())
-        db.session.merge(token_dto)
+    def actualizar(self, token: Anonimizacion):
+        anonimizacion_dto = self.fabrica_anonimizacion.crear_objeto(token, MapeadorToken())
+        db.session.merge(anonimizacion_dto)
         db.session.commit()
 
     def eliminar(self, token_id: UUID):
-        token_dto = db.session.query(TokenDTO).filter_by(id=str(token_id)).one()
-        db.session.delete(token_dto)
+        anonimizacion_dto = db.session.query(AnonimizacionDTO).filter_by(id=str(token_id)).one()
+        db.session.delete(anonimizacion_dto)
         db.session.commit()
 

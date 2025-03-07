@@ -92,6 +92,7 @@ class MapeadorToken(Mapeador):
         anonimizacion_dto = AnonimizacionDTO()
         anonimizacion_dto.id_solicitud = str(entidad.id_solicitud)
         anonimizacion_dto.id_paciente = entidad.id_paciente
+        anonimizacion_dto.estado = entidad.estado
         anonimizacion_dto.token_anonimo = entidad.token_anonimo
         anonimizacion_dto.fecha_creacion = entidad.fecha_creacion 
         return anonimizacion_dto
@@ -101,6 +102,7 @@ class MapeadorToken(Mapeador):
             id=dto.id,
             id_solicitud=dto.id_solicitud,
             id_paciente=dto.id_paciente,
+            estado = dto.estado,
             token_anonimo = dto.token_anonimo,
             fecha_creacion=dto.fecha_creacion
         )

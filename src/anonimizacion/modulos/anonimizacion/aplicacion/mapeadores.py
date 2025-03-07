@@ -1,4 +1,4 @@
-from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.comandos import CrearTokenPayload
+from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.comandos import CrearAnonimizacionPayload
 from anonimizacion.seedwork.aplicacion.dto import Mapeador as AppMap
 from anonimizacion.seedwork.dominio.repositorios import Mapeador as RepMap
 from anonimizacion.modulos.anonimizacion.dominio.entidades import Anonimizacion
@@ -46,21 +46,25 @@ class MapeadorAnonimizacion(RepMap):
 
     def dto_a_entidad(self, dto: AnonimizacionDTO) -> Anonimizacion:
         try:
-            anonimizacion = Anonimizacion()
-            anonimizacion.id_paciente = dto.id_paciente
-            anonimizacion.id_solicitud = dto.id_solicitud
-            anonimizacion.token_anonimo = dto.token_anonimo
-            anonimizacion.fecha_creacion = datetime.strptime(dto.fecha_creacion, self._FORMATO_FECHA)
+            anonimizacion = Anonimizacion(
+                id_solicitud=dto.id_solicitud,
+                id_paciente=dto.id_paciente,
+                token_anonimo=dto.token_anonimo,
+                estado=dto.estado,
+                fecha_creacion=dto.fecha_creacion,
+                fecha_actualizacion=datetime.utcnow()
+            )
             return anonimizacion
         except Exception as e:
            
             print(f"Ocurrió un error: {e}")
         
-    def payload_a_dto(self, CrearTokenPayload:CrearTokenPayload) -> AnonimizacionDTO:
+    def payload_a_dto(self, CrearAnonimizacionPayload:CrearAnonimizacionPayload) -> AnonimizacionDTO:
         return AnonimizacionDTO(
-            id= CrearTokenPayload.id_solicitud,
-            fecha_creacion= datetime.now(),
-            id_solicitud= CrearTokenPayload.id_solicitud,
-            id_paciente = CrearTokenPayload.id_paciente
+            id = CrearAnonimizacionPayload.id_solicitud,
+            id_solicitud= CrearAnonimizacionPayload.id_solicitud,
+            id_paciente = CrearAnonimizacionPayload.id_paciente,
+            token_anonimo = "",
+            estado = "CREADO",
+            fecha_creacion= datetime.now()
         )
-        

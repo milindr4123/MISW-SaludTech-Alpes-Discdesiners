@@ -2,7 +2,7 @@ import pulsar
 from pulsar.schema import *
 
 from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionCreado, AnonimizacionCreadoPayload
-from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoCrearToken, CrearTokenPayload
+from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoCrearAnonimizacion, CrearAnonimizacionPayload
 from anonimizacion.seedwork.infraestructura import utils
 
 import datetime
@@ -33,7 +33,7 @@ class Despachador:
 
     def publicar_comando(self, comando, topico):
         # TODO Debe existir un forma de crear el Payload en Avro con base al tipo del comando
-        payload = CrearTokenPayload(
+        payload = CrearAnonimizacionPayload(
             id_solicitud=str(comando.id_solicitud), 
             id_paciente=str(comando.id_paciente), 
             token_anonimo=str(comando.token_anonimo), 
@@ -41,5 +41,5 @@ class Despachador:
             estado=str(comando.estado)
             # agregar otros campos necesarios
         )
-        comando_integracion = ComandoCrearToken(data=payload)
-        self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearToken))
+        comando_integracion = ComandoCrearAnonimizacion(data=payload)
+        self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoCrearAnonimizacion))

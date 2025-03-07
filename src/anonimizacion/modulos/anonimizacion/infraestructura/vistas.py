@@ -1,5 +1,5 @@
 from anonimizacion.seedwork.infraestructura.vistas import Vista
-from anonimizacion.modulos.anonimizacion.dominio.entidades import Token
+from anonimizacion.modulos.anonimizacion.dominio.entidades import Anonimizacion
 from anonimizacion.config.db import db
 from .dto import Anonimizacion as AnonimizacionDTO
 

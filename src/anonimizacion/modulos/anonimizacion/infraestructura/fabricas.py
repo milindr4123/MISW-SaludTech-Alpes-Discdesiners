@@ -11,6 +11,7 @@ from anonimizacion.modulos.anonimizacion.infraestructura.vistas import VistaAnon
 from anonimizacion.seedwork.dominio.fabricas import Fabrica
 from anonimizacion.seedwork.dominio.repositorios import Repositorio
 from anonimizacion.modulos.anonimizacion.dominio.repositorios import RepositorioAnonimizacion
+from anonimizacion.seedwork.infraestructura.vistas import Vista
 from .repositorios import RepositorioAnonimizacionSQLite
 from .excepciones import NoExisteImplementacionParaTipoFabricaExcepcion, ExcepcionFabrica
 

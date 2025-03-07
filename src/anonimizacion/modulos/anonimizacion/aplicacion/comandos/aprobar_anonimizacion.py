@@ -10,7 +10,7 @@ from anonimizacion.modulos.anonimizacion.aplicacion.mapeadores import MapeadorAn
 from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import RepositorioAnonimizacion
 
 @dataclass
-class CrearAnonimizacion(Comando):
+class AprobarAnonimizacion(Comando):
     id:str
     id_solicitud: str
     id_paciente : str
@@ -18,9 +18,9 @@ class CrearAnonimizacion(Comando):
     fecha_creacion: str
     estado: str
 
-class CrearAnonimizacionHandler(AnonimizacionBaseHandler):
+class AprobarAnonimizacionHandler(AnonimizacionBaseHandler):
     
-    def handle(self, comando: CrearAnonimizacion):
+    def handle(self, comando: AprobarAnonimizacion):
         anonimizacion_dto = AnonimizacionDTO(
                 id=comando.id,
                 id_solicitud=comando.id_solicitud,
@@ -30,15 +30,19 @@ class CrearAnonimizacionHandler(AnonimizacionBaseHandler):
                 estado = comando.estado)
 
         anonimizacion: Anonimizacion = self.fabrica_anonimizacion.crear_objeto(anonimizacion_dto, MapeadorAnonimizacion())
-        anonimizacion.crear_anonimizacion(anonimizacion)
+        try:
+            anonimizacion.aprobar_anonimizacion()
+        except Exception as e:
+            print(f"Ocurrió un error: {e}")
+        
 
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioAnonimizacion.__class__)
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioAnonimizacion)
 
         UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, anonimizacion)
         UnidadTrabajoPuerto.savepoint()
         UnidadTrabajoPuerto.commit()
 
-@comando.register(CrearAnonimizacion)
-def ejecutar_comando_crear_anonimizacion(comando: CrearAnonimizacion):
-    handler = CrearAnonimizacionHandler()
+@comando.register(AprobarAnonimizacion)
+def ejecutar_comando_crear_anonimizacion(comando: AprobarAnonimizacion):
+    handler = AprobarAnonimizacionHandler()
     handler.handle(comando)

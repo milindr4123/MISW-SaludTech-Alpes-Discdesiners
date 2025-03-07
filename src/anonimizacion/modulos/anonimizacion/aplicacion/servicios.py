@@ -1,10 +1,10 @@
 from anonimizacion.seedwork.aplicacion.servicios import Servicio
-from anonimizacion.modulos.anonimizacion.dominio.entidades import Token
-from anonimizacion.modulos.anonimizacion.dominio.fabricas import FabricaTokenizacion
+from anonimizacion.modulos.anonimizacion.dominio.entidades import Anonimizacion
+from anonimizacion.modulos.anonimizacion.dominio.fabricas import FabricaAnonimizacion
 from anonimizacion.modulos.anonimizacion.infraestructura.fabricas import FabricaRepositorio
-from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import RepositorioTokens
+from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import RepositorioAnonimizacion
 from anonimizacion.seedwork.infraestructura.uow import UnidadTrabajoPuerto
-from .mapeadores import MapeadorToken
+from .mapeadores import MapeadorAnonimizacion
 
 from .dto import AnonimizacionDTO
 

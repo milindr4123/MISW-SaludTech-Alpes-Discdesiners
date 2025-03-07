@@ -8,7 +8,7 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 from anonimizacion.config.db import db
 from anonimizacion.modulos.anonimizacion.dominio.repositorios import RepositorioAnonimizacion
 from anonimizacion.modulos.anonimizacion.dominio.entidades import Anonimizacion
-from anonimizacion.modulos.anonimizacion.dominio.fabricas import FabricaTokenizacion
+from anonimizacion.modulos.anonimizacion.dominio.fabricas import FabricaAnonimizacion
 from .dto import Anonimizacion as AnonimizacionDTO
 from .mapeadores import MapeadorToken
 from uuid import UUID
@@ -16,7 +16,7 @@ from uuid import UUID
 class RepositorioAnonimizacionSQLite(RepositorioAnonimizacion):
 
     def __init__(self):
-        self._fabrica_anonimizacion: FabricaTokenizacion = FabricaTokenizacion()
+        self._fabrica_anonimizacion: FabricaAnonimizacion = FabricaAnonimizacion()
 
     @property
     def fabrica_anonimizacion(self):

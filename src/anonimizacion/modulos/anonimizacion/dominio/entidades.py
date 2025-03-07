@@ -19,8 +19,8 @@ class Anonimizacion(AgregacionRaiz):
     id_paciente: uuid.UUID = field(default_factory=uuid.uuid4)
     token_anonimo: ov.TextoToken = field(default_factory=ov.TextoToken)
     estado: ov.TextoToken = field(default_factory=ov.EstadoAnonimizacion.CREADO)
-    fecha_creacion: ov.FechaToken = field(default_factory=ov.FechaToken)
-    fecha_actualizacion: ov.FechaToken = field(default_factory=ov.FechaToken)
+    fecha_creacion: datetime = field(default_factory=datetime.utcnow)
+    fecha_actualizacion: datetime = field(default_factory=datetime.utcnow)
     
     
     def crear_anonimizacion(self, anonimizacion:Anonimizacion):
@@ -28,8 +28,8 @@ class Anonimizacion(AgregacionRaiz):
         self.id_paciente = anonimizacion.id_paciente
         self.token_anonimo = ""
         self.estado = ov.EstadoAnonimizacion.CREADO
-        self.fecha_creacion = datetime.datetime.now()
-        self.fecha_actualizacion = datetime.datetime.now()
+        self.fecha_creacion = datetime.now()
+        self.fecha_actualizacion = datetime.now()
         self.agregar_evento(AnonimizacionCreada(
             id_solicitud=self.id_solicitud,
             id_paciente=self.id_paciente,
@@ -40,7 +40,7 @@ class Anonimizacion(AgregacionRaiz):
         
     def aprobar_anonimizacion(self):
         self.estado = ov.EstadoAnonimizacion.APROBADO
-        self.fecha_actualizacion = datetime.datetime.now()
+        self.fecha_actualizacion = datetime.now()
         self.agregar_evento(AnonimizacionAprobada(
             id_solicitud=self.id_solicitud,
             estado=self.estado,
@@ -48,7 +48,7 @@ class Anonimizacion(AgregacionRaiz):
         
     def fallar_anonimizacion(self):
         self.estado = ov.EstadoAnonimizacion.FALLIDO
-        self.fecha_actualizacion = datetime.datetime.now()
+        self.fecha_actualizacion = datetime.now()
         self.agregar_evento(AnonimizacionFallida(
             id_solicitud=self.id_solicitud,
             estado=self.estado,

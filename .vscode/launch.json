@@ -84,22 +84,25 @@
         //     "jinja": true,
         //     "autoStartBrowser": false
         // },
-        // {
-        //     "name": "Tokenizacion: Flask",
-        //     "type": "debugpy",
-        //     "request": "launch",
-        //     "module": "flask",
-        //     "env": {
-        //         "FLASK_APP": "src/tokenizacion/api/__init__.py",
-        //         "FLASK_DEBUG": "1"
-        //     },
-        //     "args": [
-        //         "run",
-        //         "--no-debugger",
-        //         "--no-reload"
-        //     ],
-        //     "jinja": true,
-        //     "autoStartBrowser": false
-        // }
+        ,
+        {
+            "name": "Tokenizacion",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "src/tokenizacion/api/__init__.py",
+                "FLASK_DEBUG": "1"
+            },
+            "args": [
+                "run",
+                "--no-debugger",
+                "--no-reload",
+                "--port",
+                "5020"
+            ],
+            "jinja": true,
+            "autoStartBrowser": false
+        }
     ]
 }

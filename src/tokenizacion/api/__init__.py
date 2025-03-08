@@ -1,4 +1,6 @@
+import asyncio
 import os
+import threading
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
@@ -12,7 +14,7 @@ def registrar_handlers():
 def importar_modelos_alchemy():
     import tokenizacion.modulos.tokenizacion.infraestructura.dto
 
-def comenzar_consumidor():
+def comenzar_consumidor(app):
     """
     Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
     threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
@@ -20,14 +22,43 @@ def comenzar_consumidor():
     """
 
     import threading
-    import tokenizacion.modulos.tokenizacion.infraestructura.consumidores as token_consumidores
+    import tokenizacion.modulos.tokenizacion.infraestructura.consumidores as tokenizacion_consumidores
 
     # Suscripción a eventos
-    threading.Thread(target=token_consumidores.suscribirse_a_eventos).start()
+    # threading.Thread(target=anonimizador_consumidores.suscribirse_a_eventos, args=[app]).start()
 
     # Suscripción a comandos
-    threading.Thread(target=token_consumidores.suscribirse_a_comandos).start()
+    threading.Thread(target=tokenizacion_consumidores.suscribirse_a_comandos, args=[app]).start()
 
+
+def comenzar_consumidor_asyncio(app):
+    """
+    Este es un código de ejemplo. Aunque esto sea funcional, puede ser un poco peligroso tener 
+    threads corriendo por sí solos. Mi sugerencia es, en estos casos, usar un verdadero manejador
+    de procesos y threads como Celery.
+    
+    Aquí hemos reemplazado threading por asyncio para manejar tareas asíncronas de forma más segura.
+    """
+
+    import tokenizacion.modulos.tokenizacion.infraestructura.consumidores as anonimizador_consumidores
+    # Suscripción a eventos (si también es asíncrona, puedes hacer lo mismo)
+    # asyncio.create_task(anonimizador_consumidores.suscribirse_a_eventos(app))
+    def run_async_loop():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+        # Suscripción a comandos
+        loop.create_task(anonimizador_consumidores.suscribirse_a_comandos(app))
+
+        # Mantener el bucle corriendo
+        try:
+            loop.run_forever()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            loop.close()
+    threading.Thread(target=run_async_loop, daemon=True).start()
+        
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
@@ -52,7 +83,7 @@ def create_app(configuracion={}):
     with app.app_context():
         db.create_all()
         if not app.config.get('TESTING'):
-            comenzar_consumidor()
+            comenzar_consumidor_asyncio(app)
 
     # Importa Blueprints
     from . import tokenizacion

@@ -70,7 +70,9 @@ async def suscribirse_a_comandos(app=None):
             async with cliente.subscribe(
                 topic=[
                     'AnonimizacionRechazada',
-                    'AnonimizacionAprobada'
+                    'AnonimizacionAprobada',
+                    'TokenizacionAprobada',
+                    'TokenizacionRechazada'
                 ],
                 consumer_type=_pulsar.ConsumerType.Shared,
                 subscription_name='anonimizacion-sub-comandos', 

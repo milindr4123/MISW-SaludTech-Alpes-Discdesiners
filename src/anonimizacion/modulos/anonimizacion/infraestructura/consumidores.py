@@ -1,4 +1,5 @@
 from datetime import datetime
+import aiopulsar
 import pulsar, _pulsar
 from pulsar.schema import *
 import uuid
@@ -22,24 +23,24 @@ from anonimizacion.modulos.anonimizacion.aplicacion.comandos.aprobar_anonimizaci
 
 
 
-def suscribirse_a_eventos(app=None):
-    cliente = None
-    try:
-        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('AnonimizacionCreada-evento', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='anonimizacion-sub-eventos', schema=AvroSchema(EventoAnonimizacionCreado))
+# def suscribirse_a_eventos(app=None):
+#     cliente = None
+#     try:
+#         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+#         consumidor = cliente.subscribe('AnonimizacionCreada-evento', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='anonimizacion-sub-eventos', schema=AvroSchema(EventoAnonimizacionCreado))
 
-        while True:
-            mensaje = consumidor.receive()
-            print(f'anonimizacion-solicitud - Evento recibido OKR: {mensaje.value().data}')
+#         while True:
+#             mensaje = consumidor.receive()
+#             print(f'anonimizacion-solicitud - Evento recibido OKR: {mensaje.value().data}')
 
-            consumidor.acknowledge(mensaje)
+#             consumidor.acknowledge(mensaje)
 
-        cliente.close()
-    except:
-        logging.error('ERROR: Suscribiendose al tópico de eventos!')
-        traceback.print_exc()
-        if cliente:
-            cliente.close()
+#         cliente.close()
+#     except:
+#         logging.error('ERROR: Suscribiendose al tópico de eventos!')
+#         traceback.print_exc()
+#         if cliente:
+#             cliente.close()
             
 def crear_evento(dato, app):
     try:
@@ -82,52 +83,87 @@ def crear_evento(dato, app):
     except Exception as e:
         return print(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
 
-def suscribirse_a_comandos(app=None):
-    cliente = None
+async def suscribirse_a_comandos(app=None):
     try:
-        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('AnonimizacionCreada', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='anonimizacion-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
+        async with aiopulsar.connect(f'pulsar://{utils.broker_host()}:6650') as cliente:
+            async with cliente.subscribe(
+                'AnonimizacionCreada', 
+                consumer_type=_pulsar.ConsumerType.Shared,
+                subscription_name='anonimizacion-sub-comandos', 
+                schema=AvroSchema(ComandoCrearAnonimizacion)
+            ) as consumidor:
+                while True:
+                    msg = await consumidor.receive()
+                    print(msg)
+                    datos = msg.value()
+                    print(f'Evento recibido: {datos}')
+                    
+                    datos = msg.value().data
+                    ## persistencia db
+                    ejecutar_proyeccion(ProyeccionAnonimizacionTotales(datos.fecha_creacion, ProyeccionAnonimizacionTotales.ADD), app=app)
+                    ejecutar_proyeccion(ProyeccionAnonimizacionLista(datos.id_solicitud, datos.id_paciente, datos.fecha_actualizacion, datos.estado), app=app)
 
-        while True:
-            msg =  consumidor.receive()
-            topic = msg.topic_name()
-            raw_data = msg.data()
-            evento = msg.value()
-            
-            # print(f"SagaOrchestrator topic_name recibido: {msg.topic_name()}")
-            # print(f"SagaOrchestrator Mensaje recibido: {msg.data()}")
-            # if 'AnonimizacionCreada' in topic:
-            #     evento = AvroSchema(ComandoCrearAnonimizacion).decode(raw_data)
-            #     print(f"Evento de Anonimización recibido: {evento}")
-            #     # Acceder a los atributos del payload
-            #     if evento and evento.data:
-            #         print(f"ID Solicitud: {evento.data.id_solicitud}")
-            #         print(f"ID Paciente: {evento.data.id_paciente}")
-            #         print(f"Fecha Creación: {evento.data.fecha_creacion}")
-            #         print(f"Estado: {evento.data.estado}")
-            #         print(f"Token Anónimo: {evento.data.token_anonimo}")
-            #     else:
-            #         print("No se encontraron datos en el evento")
-            # print(f'anonimizacion-solicitud - Comando recibido: {datos}')
-            
-            datos = msg.value().data
-            ## persistencia db
-            ejecutar_proyeccion(ProyeccionAnonimizacionTotales(datos.fecha_creacion, ProyeccionAnonimizacionTotales.ADD), app=app)
-            ejecutar_proyeccion(ProyeccionAnonimizacionLista(datos.id_solicitud, datos.id_paciente, datos.fecha_actualizacion, datos.estado), app=app)
-            
-            
-            # Contestar que fue exitoso o fallido
-            crear_evento(datos, app) 
-            
-            
-            
+                    # Contestar que fue exitoso o fallido
+                    crear_evento(datos, app) 
 
-            consumidor.acknowledge(msg)
+                    await consumidor.acknowledge(msg)    
 
-        cliente.close()
-    except Exception as e:
-        consumidor.acknowledge(msg)
-        logging.error('ERROR: Suscribiendose al tópico de comandos!')
+    except:
+        logging.error('ERROR: Suscribiendose al tópico de eventos!')
         traceback.print_exc()
-        if cliente:
-            cliente.close()
+        
+        #########################################################################################################################        
+        
+    # # cliente = None
+    # # try:
+        
+        
+
+    # #     cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+    # #     consumidor = cliente.subscribe('AnonimizacionCreada', 
+    #                                       consumer_type=_pulsar.ConsumerType.Shared, 
+    #                                       subscription_name='anonimizacion-sub-comandos', schema=AvroSchema(ComandoCrearAnonimizacion))
+
+    # #     while True:
+    # #         msg =  consumidor.receive()
+    # #         topic = msg.topic_name()
+    # #         raw_data = msg.data()
+    # #         evento = msg.value()
+            
+    # #         # print(f"SagaOrchestrator topic_name recibido: {msg.topic_name()}")
+    # #         # print(f"SagaOrchestrator Mensaje recibido: {msg.data()}")
+    # #         # if 'AnonimizacionCreada' in topic:
+    # #         #     evento = AvroSchema(ComandoCrearAnonimizacion).decode(raw_data)
+    # #         #     print(f"Evento de Anonimización recibido: {evento}")
+    # #         #     # Acceder a los atributos del payload
+    # #         #     if evento and evento.data:
+    # #         #         print(f"ID Solicitud: {evento.data.id_solicitud}")
+    # #         #         print(f"ID Paciente: {evento.data.id_paciente}")
+    # #         #         print(f"Fecha Creación: {evento.data.fecha_creacion}")
+    # #         #         print(f"Estado: {evento.data.estado}")
+    # #         #         print(f"Token Anónimo: {evento.data.token_anonimo}")
+    # #         #     else:
+    # #         #         print("No se encontraron datos en el evento")
+    # #         # print(f'anonimizacion-solicitud - Comando recibido: {datos}')
+            
+    # #         datos = msg.value().data
+    # #         ## persistencia db
+    # #         ejecutar_proyeccion(ProyeccionAnonimizacionTotales(datos.fecha_creacion, ProyeccionAnonimizacionTotales.ADD), app=app)
+    # #         ejecutar_proyeccion(ProyeccionAnonimizacionLista(datos.id_solicitud, datos.id_paciente, datos.fecha_actualizacion, datos.estado), app=app)
+            
+            
+    # #         # Contestar que fue exitoso o fallido
+    # #         crear_evento(datos, app) 
+            
+            
+            
+
+    # #         consumidor.acknowledge(msg)
+
+    # #     cliente.close()
+    # # except Exception as e:
+    # #     consumidor.acknowledge(msg)
+    # #     logging.error('ERROR: Suscribiendose al tópico de comandos!')
+    # #     traceback.print_exc()
+    # #     if cliente:
+    # #         cliente.close()

@@ -11,14 +11,6 @@ class SagaOrchestrator:
         self.repo = SagaStateRepository()
 
     async def start_saga(self, request_id: str, data: dict):
-        # 1. Guardar estado inicial en la BD
-        self.repo.save_saga_state(request_id, step="ANONYMIZATION_REQUESTED")
-
-        # 2. Enviar comando al Anonimizador
-        cmd = {
-            "request_id": request_id,
-            "payload": data
-        }
         
         class EventoEjemplo:
             def __init__(self, id_solicitud, id_paciente, fecha_creacion, fecha_actualizacion, token_anonimo):
@@ -28,6 +20,12 @@ class SagaOrchestrator:
                 self.fecha_actualizacion = fecha_actualizacion
                 self.estado = "CREADO"
                 self.token_anonimo = token_anonimo
+                
+                
+        # 1. Guardar estado inicial en la BD
+        self.repo.save_saga_state(request_id, step="ANONYMIZATION_REQUESTED")
+
+        # 2. Enviar comando al Anonimizado
 
         # Datos de ejemplo para el evento
         evento = EventoEjemplo(
@@ -41,16 +39,16 @@ class SagaOrchestrator:
     
         await ManejarAnominizacionEvento.enviar_mensaje_anonimizacion( "AnonimizacionCreada", evento)
 
-    async def handle_anonymization_succeeded(self, request_id: str):
+    async def manejador_anonimizacion_aprobada(self, datos: object):
         # Avanzar la saga
-        self.repo.update_saga_step(request_id, step="TOKENIZATION_REQUESTED")
+        self.repo.save_saga_state(datos.id_solicitud, step="TOKENIZATION_REQUESTED")
         # Enviar comando al servicio de tokenización
-        cmd = {"request_id": request_id, "payload": {}}
+        cmd = {"request_id": datos, "payload": {}}
         # await publish_command("tokenizacion-comandos", "TokenizationRequested", cmd)
 
-    async def handle_anonymization_failed(self, request_id: str):
+    async def manejador_anonimizacion_rechazada(self, datos: object):
         # Iniciar compensación, o marcar saga como fallida
-        self.repo.update_saga_step(request_id, step="ANONYMIZATION_FAILED")
+        self.repo.save_saga_state(datos.id_solicitud, step="ANONYMIZATION_FAILED")
         # No hay pasos previos en este ejemplo, pero si hubiera, haríamos "Compensate..."
 
     # Y así para cada paso (tokenización, hsm, validación, etc.)

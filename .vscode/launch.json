@@ -12,7 +12,7 @@
             "console": "integratedTerminal"
         },
         {
-            "name": "Saga: Flask",
+            "name": "Saga",
             "type": "debugpy",
             "request": "launch",
             "module": "flask",
@@ -31,7 +31,7 @@
             "autoStartBrowser": false
         },
         {
-            "name": "Anonimizacion: Flask",
+            "name": "Anonimizacion",
             "type": "debugpy",
             "request": "launch",
             "module": "flask",

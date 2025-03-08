@@ -1,4 +1,6 @@
+import asyncio
 import os
+import threading
 
 from flask import Flask, jsonify
 from flask_swagger import swagger
@@ -13,34 +15,37 @@ def registrar_handlers():
 def importar_modelos_alchemy():
     import saga.modulos.saga.infraestructura.dto
 
-
-def comenzar_consumidor(app):
+def comenzar_consumidor_asyncio(app):
     """
-    Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
-    threads corriendo por sí solos. Mi sugerencia es en estos casos usar un verdadero manejador
+    Este es un código de ejemplo. Aunque esto sea funcional, puede ser un poco peligroso tener 
+    threads corriendo por sí solos. Mi sugerencia es, en estos casos, usar un verdadero manejador
     de procesos y threads como Celery.
-    """
-
-    import threading
-    import asyncio
-    import saga.modulos.saga.infraestructura.consumidores as saga_consumidores
     
-    def run_asyncio_loop(coro):
+    Aquí hemos reemplazado threading por asyncio para manejar tareas asíncronas de forma más segura.
+    """
+    
+    import saga.modulos.saga.infraestructura.consumidores as saga_consumidores
+
+    def run_async_loop():
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        loop.run_until_complete(coro)
-        loop.close()
         
-    threading.Thread(target=run_asyncio_loop, args=[saga_consumidores.saga_event_listener(app)]).start()
+        # Iniciar la tarea asíncrona
+        loop.create_task(saga_consumidores.suscribirse_a_comandos(app))
+        
+        # Mantener el bucle corriendo
+        try:
+            loop.run_forever()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            loop.close()
 
-
-    # Suscripción a ...
-    # threading.Thread(target=saga_consumidores.saga_event_listener, args=[app]).start()
-
-    # Suscripción a comandos
-    # threading.Thread(target=saga_consumidores.suscribirse_a_comandos, args=[app]).start()
-
-
+    # Ejecutar el loop de asyncio en un hilo separado
+    threading.Thread(target=run_async_loop, daemon=True).start()
+        
+        
+        
 def create_app(configuracion={}):
     # Init la aplicación de Flask
     app = Flask(__name__, instance_relative_config=True)
@@ -61,12 +66,12 @@ def create_app(configuracion={}):
 
     importar_modelos_alchemy()
     registrar_handlers()
-
+    
     with app.app_context():
         db.create_all()
         if not app.config.get('TESTING'):
-            comenzar_consumidor(app)
-
+            comenzar_consumidor_asyncio(app)
+            
     # Importa Blueprints
     from . import saga
 
@@ -82,6 +87,6 @@ def create_app(configuracion={}):
 
     @app.route("/health")
     def health():
-        return {"status": "up"}
+        return {"status": "up"} 
 
     return app

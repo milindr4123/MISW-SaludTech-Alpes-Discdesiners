@@ -13,7 +13,11 @@ def unix_time_millis(fecha):
     """
     if fecha is None:
         return 0
-    epoch = datetime(1970, 1, 1)
+    try:
+        epoch = datetime(1970, 1, 1)
+    except Exception as e:
+        print(e)
+        
     return int((fecha - epoch).total_seconds() * 1000)
 
 def millis_a_datetime(millis):

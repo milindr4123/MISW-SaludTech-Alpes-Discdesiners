@@ -1,4 +1,6 @@
+import asyncio
 import os
+import threading
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
@@ -7,10 +9,10 @@ from flask_swagger import swagger
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 def registrar_handlers():
-    import hsm.modulos.semilla.aplicacion
+    import hsm.modulos.hsm.aplicacion
 
 def importar_modelos_alchemy():
-    import hsm.modulos.semilla.infraestructura.dto
+    import hsm.modulos.hsm.infraestructura.dto
 
 def comenzar_consumidor(app):
     """
@@ -20,28 +22,57 @@ def comenzar_consumidor(app):
     """
 
     import threading
-    import hsm.modulos.semilla.infraestructura.consumidores as semilla
+    import hsm.modulos.hsm.infraestructura.consumidores as anonimizador_consumidores
 
     # Suscripción a eventos
-    threading.Thread(target=semilla.suscribirse_a_eventos, args=[app]).start()
+    # threading.Thread(target=anonimizador_consumidores.suscribirse_a_eventos, args=[app]).start()
 
     # Suscripción a comandos
-    threading.Thread(target=semilla.suscribirse_a_comandos, args=[app]).start()
+    threading.Thread(target=anonimizador_consumidores.suscribirse_a_comandos, args=[app]).start()
 
+
+def comenzar_consumidor_asyncio(app):
+    """
+    Este es un código de ejemplo. Aunque esto sea funcional, puede ser un poco peligroso tener 
+    threads corriendo por sí solos. Mi sugerencia es, en estos casos, usar un verdadero manejador
+    de procesos y threads como Celery.
+    
+    Aquí hemos reemplazado threading por asyncio para manejar tareas asíncronas de forma más segura.
+    """
+
+    import hsm.modulos.hsm.infraestructura.consumidores as anonimizador_consumidores
+    # Suscripción a eventos (si también es asíncrona, puedes hacer lo mismo)
+    # asyncio.create_task(anonimizador_consumidores.suscribirse_a_eventos(app))
+    def run_async_loop():
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+
+        # Suscripción a comandos
+        loop.create_task(anonimizador_consumidores.suscribirse_a_comandos(app))
+
+        # Mantener el bucle corriendo
+        try:
+            loop.run_forever()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            loop.close()
+    threading.Thread(target=run_async_loop, daemon=True).start()
+        
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
     
-    app.config['SQLALCHEMY_DATABASE_URI'] =\
-            'sqlite:///' + os.path.join(basedir, 'database.db')
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     app.secret_key = '9d58f98f-3ae8-4149-a09f-3a8c2012e32c'
     app.config['SESSION_TYPE'] = 'filesystem'
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Inicializa la DB
-    from hsm.config.db import init_db
+    from hsm.config.db import init_db, database_connection
+
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_connection(configuracion, basedir=basedir)
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
     init_db(app)
 
     from hsm.config.db import db
@@ -52,14 +83,13 @@ def create_app(configuracion={}):
     with app.app_context():
         db.create_all()
         if not app.config.get('TESTING'):
-            comenzar_consumidor(app)
+            comenzar_consumidor_asyncio(app)
 
-     # Importa Blueprints
-
-    from . import semilla
+    # Importa Blueprints
+    from . import hsm
 
     # Registro de Blueprints
-    app.register_blueprint(semilla.bp)
+    app.register_blueprint(hsm.bp)
 
     @app.route("/spec")
     def spec():

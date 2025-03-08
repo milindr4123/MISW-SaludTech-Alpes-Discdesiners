@@ -91,6 +91,10 @@ async def suscribirse_a_comandos(app=None):
                         await orchestrator.manejador_anonimizacion_aprobada(datos.data)
                     elif 'AnonimizacionRechazada' in topic: #evento de compensacion
                         await orchestrator.manejador_anonimizacion_rechazada(datos.data)
+                    elif 'TokenizacionAprobada' in topic:
+                        await orchestrator.manejador_tokenizacion_aprobada(datos.data)
+                    elif 'TokenizacionRechazada' in topic:
+                        await orchestrator.manejador_tokenizacion_rechazada(datos.data)
 
                     await consumidor.acknowledge(msg)    
 

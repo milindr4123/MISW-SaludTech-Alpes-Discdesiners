@@ -14,12 +14,6 @@ class IdDebeSerInmutableExcepcion(ExcepcionDominio):
         self.__mensaje = mensaje
     def __str__(self):
         return str(self.__mensaje)
-        
-class IdDebeSerMayor32Excepcion(ExcepcionDominio):
-    def __init__(self, mensaje='El tamaño debe ser mayor a 32'):
-        self.__mensaje = mensaje
-    def __str__(self):
-        return str(self.__mensaje)
 
 class ReglaNegocioExcepcion(ExcepcionDominio):
     def __init__(self, regla: ReglaNegocio):

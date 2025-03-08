@@ -8,16 +8,9 @@ class AnonimizacionCreadoPayload(Record):
     token_anonimo = String()
     estado = String()
     fecha_creacion = Long()
+    fecha_actualizacion = Long()
 
 class EventoAnonimizacionCreado(EventoIntegracion):
-    id = String(default=str(uuid.uuid4()))
-    time = Long()
-    ingestion = Long(default=time_millis())
-    specversion = String()
-    type = String()
-    datacontenttype = String()
-    service_name = String()
+    correlation_id = String()
+    timestamp = Long()
     data = AnonimizacionCreadoPayload()
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)

@@ -11,23 +11,23 @@ from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import Rep
 
 @dataclass
 class AprobarAnonimizacion(Comando):
-    id:str
     id_solicitud: str
     id_paciente : str
     token_anonimo : str
+    estado : str
     fecha_creacion: str
-    estado: str
+    fecha_actualizacion: str
 
 class AprobarAnonimizacionHandler(AnonimizacionBaseHandler):
     
     def handle(self, comando: AprobarAnonimizacion):
         anonimizacion_dto = AnonimizacionDTO(
-                id=comando.id,
                 id_solicitud=comando.id_solicitud,
                 id_paciente =comando.id_paciente,
                 token_anonimo =comando.token_anonimo,
+                estado = comando.estado,
                 fecha_creacion =comando.fecha_creacion,
-                estado = comando.estado)
+                fecha_actualizacion=comando.fecha_actualizacion)
 
         anonimizacion: Anonimizacion = self.fabrica_anonimizacion.crear_objeto(anonimizacion_dto, MapeadorAnonimizacion())
         try:

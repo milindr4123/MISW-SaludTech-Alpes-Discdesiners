@@ -61,10 +61,9 @@ class MapeadorAnonimizacion(RepMap):
         
     def payload_a_dto(self, CrearAnonimizacionPayload:CrearAnonimizacionPayload) -> AnonimizacionDTO:
         return AnonimizacionDTO(
-            id = CrearAnonimizacionPayload.id_solicitud,
             id_solicitud= CrearAnonimizacionPayload.id_solicitud,
             id_paciente = CrearAnonimizacionPayload.id_paciente,
             token_anonimo = "",
-            estado = "CREADO",
+            estado = CrearAnonimizacionPayload.estado,
             fecha_creacion= datetime.now()
         )

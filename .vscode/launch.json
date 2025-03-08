@@ -5,6 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Saga: Flask",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "src/saga/api/__init__.py",
+                "FLASK_DEBUG": "1"
+            },
+            "args": [
+                "run",
+                "--no-debugger",
+                "--no-reload",
+                "--port",
+                "5010"
+            ],
+            "jinja": true,
+            "autoStartBrowser": false
+        },
+        {
             "name": "Anonimizacion: Flask",
             "type": "debugpy",
             "request": "launch",
@@ -16,61 +42,64 @@
             "args": [
                 "run",
                 "--no-debugger",
-                "--no-reload"
-            ],
-            "jinja": true,
-            "autoStartBrowser": false
-        },
-        {
-            "name": "validacion: Flask",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "flask",
-            "env": {
-                "FLASK_APP": "src/validacion/api/__init__.py",
-                "FLASK_DEBUG": "1"
-            },
-            "args": [
-                "run",
-                "--no-debugger",
-                "--no-reload"
-            ],
-            "jinja": true,
-            "autoStartBrowser": false
-        },
-        {
-            "name": "HSM: Flask",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "flask",
-            "env": {
-                "FLASK_APP": "src/hsm/api/__init__.py",
-                "FLASK_DEBUG": "1"
-            },
-            "args": [
-                "run",
-                "--no-debugger",
-                "--no-reload"
-            ],
-            "jinja": true,
-            "autoStartBrowser": false
-        },
-        {
-            "name": "Tokenizacion: Flask",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "flask",
-            "env": {
-                "FLASK_APP": "src/tokenizacion/api/__init__.py",
-                "FLASK_DEBUG": "1"
-            },
-            "args": [
-                "run",
-                "--no-debugger",
-                "--no-reload"
+                "--no-reload",
+                "--port",
+                "5000"
             ],
             "jinja": true,
             "autoStartBrowser": false
         }
+        // ,
+        // {
+        //     "name": "validacion: Flask",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "module": "flask",
+        //     "env": {
+        //         "FLASK_APP": "src/validacion/api/__init__.py",
+        //         "FLASK_DEBUG": "1"
+        //     },
+        //     "args": [
+        //         "run",
+        //         "--no-debugger",
+        //         "--no-reload"
+        //     ],
+        //     "jinja": true,
+        //     "autoStartBrowser": false
+        // },
+        // {
+        //     "name": "HSM: Flask",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "module": "flask",
+        //     "env": {
+        //         "FLASK_APP": "src/hsm/api/__init__.py",
+        //         "FLASK_DEBUG": "1"
+        //     },
+        //     "args": [
+        //         "run",
+        //         "--no-debugger",
+        //         "--no-reload"
+        //     ],
+        //     "jinja": true,
+        //     "autoStartBrowser": false
+        // },
+        // {
+        //     "name": "Tokenizacion: Flask",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "module": "flask",
+        //     "env": {
+        //         "FLASK_APP": "src/tokenizacion/api/__init__.py",
+        //         "FLASK_DEBUG": "1"
+        //     },
+        //     "args": [
+        //         "run",
+        //         "--no-debugger",
+        //         "--no-reload"
+        //     ],
+        //     "jinja": true,
+        //     "autoStartBrowser": false
+        // }
     ]
 }

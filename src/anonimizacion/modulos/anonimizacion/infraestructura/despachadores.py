@@ -24,9 +24,10 @@ class Despachador:
         payload = AnonimizacionCreadoPayload(
             id_solicitud=str(evento.id_solicitud), 
             id_paciente=str(evento.id_paciente), 
-            token_anonimo=str(evento.token_anonimo), 
+            token_anonimo=str(evento.token_anonimo),
+            estado=str(evento.estado), 
             fecha_creacion=int(unix_time_millis(evento.fecha_creacion)),
-            estado=str(evento.estado)
+            fecha_actualizacion=int(unix_time_millis(evento.fecha_actualizacion))
         )
         evento_integracion = EventoAnonimizacionCreado(data=payload)
         self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoAnonimizacionCreado))
@@ -36,9 +37,10 @@ class Despachador:
         payload = CrearAnonimizacionPayload(
             id_solicitud=str(comando.id_solicitud), 
             id_paciente=str(comando.id_paciente), 
-            token_anonimo=str(comando.token_anonimo), 
+            token_anonimo=str(comando.token_anonimo),
+            estado=str(comando.estado), 
             fecha_creacion=int(unix_time_millis(comando.fecha_creacion)),
-            estado=str(comando.estado)
+            fecha_actualizacion=int(unix_time_millis(comando.fecha_actualizacion))
             # agregar otros campos necesarios
         )
         comando_integracion = ComandoCrearAnonimizacion(data=payload)

@@ -11,7 +11,6 @@ from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import Rep
 
 @dataclass
 class CrearAnonimizacion(Comando):
-    id:str
     id_solicitud: str
     id_paciente : str
     token_anonimo : str
@@ -22,7 +21,6 @@ class CrearAnonimizacionHandler(AnonimizacionBaseHandler):
     
     def handle(self, comando: CrearAnonimizacion):
         anonimizacion_dto = AnonimizacionDTO(
-                id=comando.id,
                 id_solicitud=comando.id_solicitud,
                 id_paciente =comando.id_paciente,
                 token_anonimo =comando.token_anonimo,
@@ -32,7 +30,7 @@ class CrearAnonimizacionHandler(AnonimizacionBaseHandler):
         anonimizacion: Anonimizacion = self.fabrica_anonimizacion.crear_objeto(anonimizacion_dto, MapeadorAnonimizacion())
         anonimizacion.crear_anonimizacion(anonimizacion)
 
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioAnonimizacion.__class__)
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioAnonimizacion)
 
         UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, anonimizacion)
         UnidadTrabajoPuerto.savepoint()

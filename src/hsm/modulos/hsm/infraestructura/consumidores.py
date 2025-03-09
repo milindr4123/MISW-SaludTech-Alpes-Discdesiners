@@ -18,7 +18,7 @@ from hsm.seedwork.aplicacion.comandos import ejecutar_commando
 from hsm.modulos.hsm.aplicacion.comandos.crear_hsm import CrearHsm
 from hsm.seedwork.infraestructura.proyecciones import ejecutar_proyeccion
 from hsm.modulos.hsm.infraestructura.proyecciones import ProyeccionHsmLista, ProyeccionHsmTotales
-
+from hsm.seedwork.infraestructura.timeUtils import unix_time_millis
 from hsm.modulos.hsm.aplicacion.comandos.aprobar_hsm import AprobarHsm
 
 def crear_evento(dato, app):
@@ -39,8 +39,9 @@ def crear_evento(dato, app):
                                        hsm_dto.id_paciente, 
                                        hsm_dto.token_anonimo,
                                        estado,
-                                       hsm_dto.fecha_creacion, 
-                                       datetime.now())
+                                       int(unix_time_millis(datetime.now())),
+                                       int(unix_time_millis(datetime.now()))
+        )
         
         # TODO Reemplaze este código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura

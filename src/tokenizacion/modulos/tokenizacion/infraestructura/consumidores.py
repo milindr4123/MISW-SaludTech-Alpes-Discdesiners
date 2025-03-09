@@ -18,7 +18,7 @@ from tokenizacion.seedwork.aplicacion.comandos import ejecutar_commando
 from tokenizacion.modulos.tokenizacion.aplicacion.comandos.crear_tokenizacion import CrearTokenizacion
 from tokenizacion.seedwork.infraestructura.proyecciones import ejecutar_proyeccion
 from tokenizacion.modulos.tokenizacion.infraestructura.proyecciones import ProyeccionTokenizacionLista, ProyeccionTokenizacionTotales
-
+from tokenizacion.seedwork.infraestructura.timeUtils import unix_time_millis
 from tokenizacion.modulos.tokenizacion.aplicacion.comandos.aprobar_tokenizacion import AprobarTokenizacion
 
 def crear_evento(dato, app):
@@ -39,8 +39,8 @@ def crear_evento(dato, app):
                                        tokenizacion_dto.id_paciente, 
                                        tokenizacion_dto.token_anonimo,
                                        estado,
-                                       tokenizacion_dto.fecha_creacion, 
-                                       datetime.now())
+                                       int(unix_time_millis(datetime.now())),
+                                       int(unix_time_millis(datetime.now())))
         
         # TODO Reemplaze este código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura

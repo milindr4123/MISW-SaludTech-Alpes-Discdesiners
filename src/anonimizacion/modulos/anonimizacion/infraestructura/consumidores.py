@@ -20,6 +20,7 @@ from anonimizacion.seedwork.infraestructura.proyecciones import ejecutar_proyecc
 from anonimizacion.modulos.anonimizacion.infraestructura.proyecciones import ProyeccionAnonimizacionLista, ProyeccionAnonimizacionTotales
 
 from anonimizacion.modulos.anonimizacion.aplicacion.comandos.aprobar_anonimizacion import AprobarAnonimizacion
+from anonimizacion.seedwork.infraestructura.timeUtils import unix_time_millis
 
 def crear_evento(dato, app):
     try:
@@ -39,8 +40,10 @@ def crear_evento(dato, app):
                                        anonimizacion_dto.id_paciente, 
                                        anonimizacion_dto.token_anonimo,
                                        estado,
-                                       anonimizacion_dto.fecha_creacion, 
-                                       datetime.now())
+                                       int(unix_time_millis(datetime.now())),
+                                       int(unix_time_millis(datetime.now()))
+                                       )
+                                       
         
         # guardar en la BD
         ejecutar_proyeccion(ProyeccionAnonimizacionTotales(comando.fecha_creacion, ProyeccionAnonimizacionTotales.ADD), app=app)

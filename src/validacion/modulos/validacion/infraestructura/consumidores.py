@@ -18,7 +18,7 @@ from validacion.seedwork.aplicacion.comandos import ejecutar_commando
 from validacion.modulos.validacion.aplicacion.comandos.crear_validacion import CrearValidacion
 from validacion.seedwork.infraestructura.proyecciones import ejecutar_proyeccion
 from validacion.modulos.validacion.infraestructura.proyecciones import ProyeccionValidacionLista, ProyeccionValidacionTotales
-
+from validacion.seedwork.infraestructura.timeUtils import unix_time_millis
 from validacion.modulos.validacion.aplicacion.comandos.aprobar_validacion import AprobarValidacion
 
 def crear_evento(dato, app):
@@ -39,8 +39,8 @@ def crear_evento(dato, app):
                                        validacion_dto.id_paciente, 
                                        validacion_dto.token_anonimo,
                                        estado,
-                                       validacion_dto.fecha_creacion, 
-                                       datetime.now())
+                                       int(unix_time_millis(datetime.now())),
+                                       int(unix_time_millis(datetime.now())))
         
         # TODO Reemplaze este código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura

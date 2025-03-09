@@ -28,6 +28,17 @@ def crear_token_documento_asincrona():
         # Revise la clase Despachador de la capa de infraestructura
         ejecutar_commando(comando)
         
-        return Response('{}', status=202, mimetype='application/json')
+        # Respuesta más significativa con los datos
+        response_data = {
+            "status": "success",
+            "message": "Token creado correctamente",
+            "data": {
+                "id_solicitud": token_dto.id_solicitud,
+                "id_paciente": token_dto.id_paciente,
+                "token_anonimo": token_dto.token_anonimo,
+                "fecha_creacion": token_dto.fecha_creacion
+            }
+        }
+        return Response(json.dumps(response_data), status=202, mimetype='application/json')
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')

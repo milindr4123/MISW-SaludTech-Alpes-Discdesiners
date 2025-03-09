@@ -11,7 +11,6 @@ from hsm.modulos.hsm.infraestructura.repositorios import RepositorioHsm
 
 @dataclass
 class CrearHsm(Comando):
-    id:str
     id_solicitud: str
     id_paciente : str
     token_anonimo : str

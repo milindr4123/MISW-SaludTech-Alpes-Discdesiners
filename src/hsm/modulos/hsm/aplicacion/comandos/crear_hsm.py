@@ -21,7 +21,6 @@ class CrearHsmHandler(HsmBaseHandler):
     
     def handle(self, comando: CrearHsm):
         hsm_dto = HsmDTO(
-                id=comando.id,
                 id_solicitud=comando.id_solicitud,
                 id_paciente =comando.id_paciente,
                 token_anonimo =comando.token_anonimo,

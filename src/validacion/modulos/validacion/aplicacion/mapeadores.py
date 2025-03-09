@@ -11,7 +11,6 @@ class MapeadorValidacionDTOJson(AppMap):
     
     def externo_a_dto(self, externo: dict) -> ValidacionDTO:
         validacion_dto = ValidacionDTO(
-            id = externo.get('id'), 
             id_solicitud= externo.get('id_solicitud'),
             id_paciente= externo.get('id_paciente'),
             token_anonimo = externo.get('token_anonimo'),

@@ -11,7 +11,6 @@ from validacion.modulos.validacion.infraestructura.repositorios import Repositor
 
 @dataclass
 class CrearValidacion(Comando):
-    id:str
     id_solicitud: str
     id_paciente : str
     token_anonimo : str
@@ -22,7 +21,6 @@ class CrearValidacionHandler(ValidacionBaseHandler):
     
     def handle(self, comando: CrearValidacion):
         validacion_dto = ValidacionDTO(
-                id=comando.id,
                 id_solicitud=comando.id_solicitud,
                 id_paciente =comando.id_paciente,
                 token_anonimo =comando.token_anonimo,
@@ -32,7 +30,7 @@ class CrearValidacionHandler(ValidacionBaseHandler):
         validacion: Validacion = self.fabrica_validacion.crear_objeto(validacion_dto, MapeadorValidacion())
         validacion.crear_validacion(validacion)
 
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioValidacion.__class__)
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioValidacion)
 
         UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, validacion)
         UnidadTrabajoPuerto.savepoint()

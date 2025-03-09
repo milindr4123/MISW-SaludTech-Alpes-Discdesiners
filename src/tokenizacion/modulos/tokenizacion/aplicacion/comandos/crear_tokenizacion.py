@@ -11,7 +11,6 @@ from tokenizacion.modulos.tokenizacion.infraestructura.repositorios import Repos
 
 @dataclass
 class CrearTokenizacion(Comando):
-    id:str
     id_solicitud: str
     id_paciente : str
     token_anonimo : str

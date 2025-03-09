@@ -21,27 +21,6 @@ from hsm.modulos.hsm.infraestructura.proyecciones import ProyeccionHsmLista, Pro
 
 from hsm.modulos.hsm.aplicacion.comandos.aprobar_hsm import AprobarHsm
 
-
-
-# def suscribirse_a_eventos(app=None):
-#     cliente = None
-#     try:
-#         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-#         consumidor = cliente.subscribe('HsmCreada-evento', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='hsm-sub-eventos', schema=AvroSchema(EventoHsmCreado))
-
-#         while True:
-#             mensaje = consumidor.receive()
-#             print(f'hsm-solicitud - Evento recibido OKR: {mensaje.value().data}')
-
-#             consumidor.acknowledge(mensaje)
-
-#         cliente.close()
-#     except:
-#         logging.error('ERROR: Suscribiendose al tópico de eventos!')
-#         traceback.print_exc()
-#         if cliente:
-#             cliente.close()
-            
 def crear_evento(dato, app):
     try:
         hsm_dict = dato
@@ -52,7 +31,7 @@ def crear_evento(dato, app):
         # Asignar un valor aleatorio a estado con 70% de probabilidad de ser APROBADO y 30% de ser FALLIDO
         estado = random.choices(
             [EstadoHsm.APROBADO.value, EstadoHsm.FALLIDO.value],
-            weights=[70, 30],
+            weights=[99, 1],
             k=1
         )[0]
 
@@ -87,7 +66,7 @@ async def suscribirse_a_comandos(app=None):
     try:
         async with aiopulsar.connect(f'pulsar://{utils.broker_host()}:6650') as cliente:
             async with cliente.subscribe(
-                'HsmCreada', 
+                topic=['HsmCreada','HsmCompensada'], 
                 consumer_type=_pulsar.ConsumerType.Shared,
                 subscription_name='hsm-sub-comandos', 
                 schema=AvroSchema(ComandoCrearHsm)
@@ -95,6 +74,7 @@ async def suscribirse_a_comandos(app=None):
                 while True:
                     msg = await consumidor.receive()
                     print(msg)
+                    topic = msg.topic_name()
                     datos = msg.value()
                     print(f'Evento recibido: {datos}')
                     
@@ -104,66 +84,11 @@ async def suscribirse_a_comandos(app=None):
                     ejecutar_proyeccion(ProyeccionHsmLista(datos.id_solicitud, datos.id_paciente, datos.fecha_actualizacion, datos.estado), app=app)
 
                     # Contestar que fue exitoso o fallido
-                    crear_evento(datos, app) 
+                    if 'HsmCreada' in topic:
+                        crear_evento(datos, app) 
 
                     await consumidor.acknowledge(msg)    
 
     except:
         logging.error('ERROR: Suscribiendose al tópico de eventos!')
         traceback.print_exc()
-        
-        #########################################################################################################################        
-        
-    # # cliente = None
-    # # try:
-        
-        
-
-    # #     cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-    # #     consumidor = cliente.subscribe('HsmCreada', 
-    #                                       consumer_type=_pulsar.ConsumerType.Shared, 
-    #                                       subscription_name='hsm-sub-comandos', schema=AvroSchema(ComandoCrearHsm))
-
-    # #     while True:
-    # #         msg =  consumidor.receive()
-    # #         topic = msg.topic_name()
-    # #         raw_data = msg.data()
-    # #         evento = msg.value()
-            
-    # #         # print(f"SagaOrchestrator topic_name recibido: {msg.topic_name()}")
-    # #         # print(f"SagaOrchestrator Mensaje recibido: {msg.data()}")
-    # #         # if 'HsmCreada' in topic:
-    # #         #     evento = AvroSchema(ComandoCrearHsm).decode(raw_data)
-    # #         #     print(f"Evento de Anonimización recibido: {evento}")
-    # #         #     # Acceder a los atributos del payload
-    # #         #     if evento and evento.data:
-    # #         #         print(f"ID Solicitud: {evento.data.id_solicitud}")
-    # #         #         print(f"ID Paciente: {evento.data.id_paciente}")
-    # #         #         print(f"Fecha Creación: {evento.data.fecha_creacion}")
-    # #         #         print(f"Estado: {evento.data.estado}")
-    # #         #         print(f"Token Anónimo: {evento.data.token_anonimo}")
-    # #         #     else:
-    # #         #         print("No se encontraron datos en el evento")
-    # #         # print(f'hsm-solicitud - Comando recibido: {datos}')
-            
-    # #         datos = msg.value().data
-    # #         ## persistencia db
-    # #         ejecutar_proyeccion(ProyeccionHsmTotales(datos.fecha_creacion, ProyeccionHsmTotales.ADD), app=app)
-    # #         ejecutar_proyeccion(ProyeccionHsmLista(datos.id_solicitud, datos.id_paciente, datos.fecha_actualizacion, datos.estado), app=app)
-            
-            
-    # #         # Contestar que fue exitoso o fallido
-    # #         crear_evento(datos, app) 
-            
-            
-            
-
-    # #         consumidor.acknowledge(msg)
-
-    # #     cliente.close()
-    # # except Exception as e:
-    # #     consumidor.acknowledge(msg)
-    # #     logging.error('ERROR: Suscribiendose al tópico de comandos!')
-    # #     traceback.print_exc()
-    # #     if cliente:
-    # #         cliente.close()

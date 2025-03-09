@@ -10,10 +10,10 @@ from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.eventos impor
 from saga.modulos.saga.aplicacion.saga_orchestrator import SagaOrchestrator
 from saga.seedwork.infraestructura import utils
 
-orchestrator = SagaOrchestrator()
 
 async def suscribirse_a_comandos(app=None):
     print(f"SagaOrchestrator suscribirse_a_comandos !!!!!!!!!!!!!!")
+    orchestrator = SagaOrchestrator(app)
     try:
         async with aiopulsar.connect(f'pulsar://{utils.broker_host()}:6650') as cliente:
             async with cliente.subscribe(

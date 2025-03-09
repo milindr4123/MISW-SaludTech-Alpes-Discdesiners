@@ -10,9 +10,9 @@ from saga.modulos.saga.infraestructura.despachadores import DespachadorComandos
 from saga.seedwork.infraestructura.utils import unix_time_millis
 
 class SagaHandler:
-    def __init__(self):
+    def __init__(self, app=None):
         self.despachador = DespachadorComandos()
-        self.repo = SagaStateRepository()
+        self.repo = SagaStateRepository(app)
 
     def crear_comando_payload(self, datos):
         """

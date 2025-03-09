@@ -1,7 +1,6 @@
 import asyncio
 from datetime import datetime
 from uuid import uuid4
-from saga.modulos.saga.aplicacion.manejador.anonimizador import ManejarAnominizacionEvento
 from saga.modulos.saga.aplicacion.saga_state_repository import SagaStateRepository
 from saga.modulos.saga.infraestructura.despachadores import DespachadorComandos
 from saga.modulos.saga.infraestructura.schema.v1.comandos import ComandoCrearAnonimizacion, ComandoCrearHsm, ComandoCrearTokenizacion, ComandoCrearValidacion, CrearAnonimizacionPayload, CrearHsmPayload, CrearTokenizacionPayload, CrearValidacionPayload
@@ -11,10 +10,11 @@ from saga.seedwork.infraestructura.utils import unix_time_millis
 
 
 class SagaOrchestrator:
-    def __init__(self):
-        self.repo = SagaStateRepository()
+    
+    def __init__(self, app=None):
+        self.repo = SagaStateRepository(app)
         self.despachador = DespachadorComandos()
-
+        
     async def manejador_anonimizacion_aprobada(self, datos: object):
         self.repo.save_saga_state(datos.id_solicitud, step="TOKENIZATION_REQUESTED")
         topico = "TokenizacionCreada"

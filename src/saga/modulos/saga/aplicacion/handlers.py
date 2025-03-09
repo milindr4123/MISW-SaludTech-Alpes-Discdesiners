@@ -54,9 +54,3 @@ class SagaHandler:
         except Exception as e:
             print(e)
             self.compensar_saga(datos)
-
-    def compensar_saga(self, datos):
-        # Ejecutar compensaciones en orden inverso
-        self.despachador.enviar_comando("validacion", "CompensateValidation", datos)
-        self.despachador.enviar_comando("hsm", "CompensateHSMSeed", datos)
-        # ... otros pasos de compensación ...

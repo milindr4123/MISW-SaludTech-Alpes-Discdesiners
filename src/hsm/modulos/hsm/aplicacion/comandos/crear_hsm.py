@@ -30,7 +30,7 @@ class CrearHsmHandler(HsmBaseHandler):
         hsm: Hsm = self.fabrica_hsm.crear_objeto(hsm_dto, MapeadorHsm())
         hsm.crear_hsm(hsm)
 
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioHsm.__class__)
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioHsm)
 
         UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, hsm)
         UnidadTrabajoPuerto.savepoint()

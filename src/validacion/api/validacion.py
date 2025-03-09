@@ -37,6 +37,9 @@ def crear_token():
                 "fecha_creacion": token_dto.fecha_creacion
             }
         }
+
+        return Response(json.dumps(response_data), status=202, mimetype='application/json')
+
     except ExcepcionDominio as e:
         return Response(json.dumps(dict(error=str(e))), status=400, mimetype='application/json')
     except Exception as e:

@@ -8,6 +8,8 @@ del dominio de vuelos
 from abc import ABC
 from validacion.seedwork.dominio.repositorios import Repositorio
 
-class RepositorioTokens(Repositorio, ABC):
+class RepositorioValidacion(Repositorio, ABC):
     ...
 
+class RepositorioEventosValidacion(Repositorio, ABC):
+    ...

@@ -29,3 +29,18 @@ class ComandoCrearTokenizacion(ComandoIntegracion):
     correlation_id = String()
     timestamp = Long()
     data = CrearTokenizacionPayload()
+    
+    
+    
+class CrearHsmPayload(ComandoIntegracion):
+    id_solicitud = String()
+    id_paciente = String()
+    token_anonimo = String()
+    estado = String()
+    fecha_creacion = Long()
+    fecha_actualizacion = Long()
+
+class ComandoCrearHsm(ComandoIntegracion):
+    correlation_id = String()
+    timestamp = Long()
+    data = CrearHsmPayload()

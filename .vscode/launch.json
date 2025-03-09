@@ -69,7 +69,7 @@
             "autoStartBrowser": false
         },
         {
-            "name": "HSM",
+            "name": "Hsm",
             "type": "debugpy",
             "request": "launch",
             "module": "flask",
@@ -88,7 +88,7 @@
             "autoStartBrowser": false
         },
         {
-            "name": "validacion",
+            "name": "Validacion",
             "type": "debugpy",
             "request": "launch",
             "module": "flask",

@@ -15,7 +15,7 @@ from hsm.seedwork.aplicacion.queries import ejecutar_query
 bp = api.crear_blueprint('hsm', '/hsm')
 
 @bp.route('/hsm', methods=('POST',))
-def crear_token():
+def crear_hsm():
     try:
         token_dict = request.json
 
@@ -29,7 +29,7 @@ def crear_token():
        # Respuesta más significativa con los datos
         response_data = {
             "status": "success",
-            "message": "Token creado correctamente",
+            "message": "Hsm creado correctamente",
             "data": {
                 "id_solicitud": token_dto.id_solicitud,
                 "id_paciente": token_dto.id_paciente,

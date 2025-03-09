@@ -22,7 +22,6 @@ class CrearTokenizacionHandler(TokenizacionBaseHandler):
     
     def handle(self, comando: CrearTokenizacion):
         tokenizacion_dto = TokenizacionDTO(
-                id=comando.id,
                 id_solicitud=comando.id_solicitud,
                 id_paciente =comando.id_paciente,
                 token_anonimo =comando.token_anonimo,
@@ -32,7 +31,7 @@ class CrearTokenizacionHandler(TokenizacionBaseHandler):
         tokenizacion: Tokenizacion = self.fabrica_tokenizacion.crear_objeto(tokenizacion_dto, MapeadorTokenizacion())
         tokenizacion.crear_tokenizacion(tokenizacion)
 
-        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioTokenizacion.__class__)
+        repositorio = self.fabrica_repositorio.crear_objeto(RepositorioTokenizacion)
 
         UnidadTrabajoPuerto.registrar_batch(repositorio.agregar, tokenizacion)
         UnidadTrabajoPuerto.savepoint()

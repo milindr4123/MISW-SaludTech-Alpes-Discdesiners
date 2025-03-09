@@ -6,7 +6,7 @@ encargados de la transformación entre formatos de dominio y DTOs
 """
 
 from hsm.modulos.hsm.dominio.eventos import HsmFallida, HsmCreada, HsmAprobada, EventoHsm
-from hsm.modulos.hsm.infraestructura.despachadores import unix_time_millis
+from hsm.seedwork.infraestructura.timeUtils import unix_time_millis
 from hsm.seedwork.dominio.repositorios import Mapeador
 from hsm.modulos.hsm.dominio.entidades import Hsm
 from .dto import Hsm as HsmDTO

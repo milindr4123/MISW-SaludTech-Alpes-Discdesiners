@@ -4,13 +4,7 @@ from pulsar.schema import *
 from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.eventos import EventoAnonimizacionCreado, AnonimizacionCreadoPayload
 from anonimizacion.modulos.anonimizacion.infraestructura.schema.v1.comandos import ComandoCrearAnonimizacion, CrearAnonimizacionPayload
 from anonimizacion.seedwork.infraestructura import utils
-
-import datetime
-
-epoch = datetime.datetime.utcfromtimestamp(0)
-
-def unix_time_millis(dt):
-    return (dt - epoch).total_seconds() * 1000.0
+from anonimizacion.seedwork.infraestructura.timeUtils import unix_time_millis
 
 class Despachador:
     def _publicar_mensaje(self, mensaje, topico, schema):

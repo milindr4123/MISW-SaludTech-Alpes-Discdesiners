@@ -6,7 +6,7 @@ encargados de la transformación entre formatos de dominio y DTOs
 """
 
 from anonimizacion.modulos.anonimizacion.dominio.eventos import AnonimizacionFallida, AnonimizacionCreada, AnonimizacionAprobada, EventoAnonimizacion
-from anonimizacion.modulos.anonimizacion.infraestructura.despachadores import unix_time_millis
+from anonimizacion.seedwork.infraestructura.timeUtils import unix_time_millis
 from anonimizacion.seedwork.dominio.repositorios import Mapeador
 from anonimizacion.modulos.anonimizacion.dominio.entidades import Anonimizacion
 from .dto import Anonimizacion as AnonimizacionDTO

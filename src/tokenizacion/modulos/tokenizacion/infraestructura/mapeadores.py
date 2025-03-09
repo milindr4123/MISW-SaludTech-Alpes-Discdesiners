@@ -6,7 +6,7 @@ encargados de la transformación entre formatos de dominio y DTOs
 """
 
 from tokenizacion.modulos.tokenizacion.dominio.eventos import TokenizacionFallida, TokenizacionCreada, TokenizacionAprobada, EventoTokenizacion
-from tokenizacion.modulos.tokenizacion.infraestructura.despachadores import unix_time_millis
+from tokenizacion.seedwork.infraestructura.timeUtils import unix_time_millis
 from tokenizacion.seedwork.dominio.repositorios import Mapeador
 from tokenizacion.modulos.tokenizacion.dominio.entidades import Tokenizacion
 from .dto import Tokenizacion as TokenizacionDTO

@@ -6,7 +6,7 @@ encargados de la transformación entre formatos de dominio y DTOs
 """
 
 from validacion.modulos.validacion.dominio.eventos import ValidacionFallida, ValidacionCreada, ValidacionAprobada, EventoValidacion
-from validacion.modulos.validacion.infraestructura.despachadores import unix_time_millis
+from validacion.seedwork.infraestructura.timeUtils import unix_time_millis
 from validacion.seedwork.dominio.repositorios import Mapeador
 from validacion.modulos.validacion.dominio.entidades import Validacion
 from .dto import Validacion as ValidacionDTO

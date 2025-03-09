@@ -32,13 +32,13 @@ class SagaOrchestrator:
         # Avanzar la saga
         self.repo.save_saga_state(datos.id_solicitud, step="HSM_REQUESTED")
         # Enviar comando al servicio de tokenización
-        topico = "TokenizacionCreada" 
+        topico = "HsmCreada" 
         evento_integracion = self.crear_comando_tokenizacion(datos)
         self.despachador.publicar_mensaje_async(evento_integracion, topico, ComandoCrearTokenizacion)
         
     async def manejador_tokenizacion_rechazada(self, datos: object):
         # Iniciar compensación, o marcar saga como fallida
-        self.repo.save_saga_state(datos.id_solicitud, step="TOKENIZACION_FAILED")
+        self.repo.save_saga_state(datos.id_solicitud, step="HSM_FAILED")
         # No hay pasos previos en este ejemplo, pero si hubiera, haríamos "Compensate..."
 
     # Y así para cada paso (tokenización, hsm, validación, etc.)

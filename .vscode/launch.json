@@ -25,7 +25,7 @@
                 "--no-debugger",
                 "--no-reload",
                 "--port",
-                "5010"
+                "5000"
             ],
             "jinja": true,
             "autoStartBrowser": false
@@ -44,7 +44,7 @@
                 "--no-debugger",
                 "--no-reload",
                 "--port",
-                "5000"
+                "5100"
             ],
             "jinja": true,
             "autoStartBrowser": false
@@ -69,23 +69,6 @@
         // },
         ,
         {
-            "name": "HSM",
-            "type": "debugpy",
-            "request": "launch",
-            "module": "flask",
-            "env": {
-                "FLASK_APP": "src/hsm/api/__init__.py",
-                "FLASK_DEBUG": "1"
-            },
-            "args": [
-                "run",
-                "--no-debugger",
-                "--no-reload"
-            ],
-            "jinja": true,
-            "autoStartBrowser": false
-        },
-        {
             "name": "Tokenizacion",
             "type": "debugpy",
             "request": "launch",
@@ -99,10 +82,29 @@
                 "--no-debugger",
                 "--no-reload",
                 "--port",
-                "5020"
+                "5200"
             ],
             "jinja": true,
             "autoStartBrowser": false
-        }
+        },
+        {
+            "name": "HSM",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "src/hsm/api/__init__.py",
+                "FLASK_DEBUG": "1"
+            },
+            "args": [
+                "run",
+                "--no-debugger",
+                "--no-reload",
+                "--port",
+                "5300"
+            ],
+            "jinja": true,
+            "autoStartBrowser": false
+        },
     ]
 }

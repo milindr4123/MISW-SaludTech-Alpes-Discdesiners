@@ -1,23 +1,23 @@
 from anonimizacion.seedwork.infraestructura.proyecciones import Proyeccion, ProyeccionHandler
 from anonimizacion.seedwork.infraestructura.proyecciones import ejecutar_proyeccion as proyeccion
 from anonimizacion.modulos.anonimizacion.infraestructura.fabricas import FabricaRepositorio
-from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import RepositorioTokens
-from anonimizacion.modulos.anonimizacion.dominio.entidades import Token
-from anonimizacion.modulos.anonimizacion.infraestructura.dto import Token as TokenDTO
+from anonimizacion.modulos.anonimizacion.infraestructura.repositorios import RepositorioAnonimizacion
+from anonimizacion.modulos.anonimizacion.dominio.entidades import Anonimizacion
+from anonimizacion.modulos.anonimizacion.infraestructura.dto import Anonimizacion as AnonimizacionDTO
 
 from anonimizacion.seedwork.infraestructura.utils import millis_a_datetime
 import datetime
 import logging
 import traceback
 from abc import ABC, abstractmethod
-from .dto import ReservaToken
+from .dto import ReservaAnonimizacion
 
-class ProyeccionToken(Proyeccion, ABC):
+class ProyeccionAnonimizacion(Proyeccion, ABC):
     @abstractmethod
     def ejecutar(self):
         ...
 
-class ProyeccionTokenTotales(ProyeccionToken):
+class ProyeccionAnonimizacionTotales(ProyeccionAnonimizacion):
     ADD = 1
     DELETE = 2
     UPDATE = 3
@@ -31,7 +31,7 @@ class ProyeccionTokenTotales(ProyeccionToken):
             logging.error('ERROR: DB del app no puede ser nula')
             return
         # NOTE esta no usa repositorios y de una vez aplica los cambios. Es decir, no todo siempre debe ser un repositorio
-        record = db.session.query(ReservaToken).filter_by(fecha_creacion=self.fecha_creacion.date()).one_or_none()
+        record = db.session.query(ReservaAnonimizacion).filter_by(fecha_creacion=self.fecha_creacion.date()).one_or_none()
 
         if record and self.operacion == self.ADD:
             record.total += 1
@@ -39,14 +39,15 @@ class ProyeccionTokenTotales(ProyeccionToken):
             record.total -= 1 
             record.total = max(record.total, 0)
         else:
-            db.session.add(ReservaToken(fecha_creacion=self.fecha_creacion.date(), total=1))
+            db.session.add(ReservaAnonimizacion(fecha_creacion=self.fecha_creacion.date(), total=1))
         
         db.session.commit()
 
-class ProyeccionTokenLista(ProyeccionToken):
-    def __init__(self, id_solciitud, id_paciente, fecha_actualizacion):
+class ProyeccionAnonimizacionLista(ProyeccionAnonimizacion):
+    def __init__(self, id_solciitud, id_paciente, fecha_actualizacion, estado):
         self.id_solciitud = id_solciitud
         self.id_paciente = id_paciente
+        self.estado = estado
         self.fecha_actualizacion = millis_a_datetime(fecha_actualizacion)
     
     def ejecutar(self, db=None):
@@ -55,24 +56,26 @@ class ProyeccionTokenLista(ProyeccionToken):
             return
         
         fabrica_repositorio = FabricaRepositorio()
-        repositorio = fabrica_repositorio.crear_objeto(RepositorioTokens)
+        repositorio = fabrica_repositorio.crear_objeto(RepositorioAnonimizacion)
         
         # TODO Haga los cambios necesarios para que se consideren los itinerarios, demás entidades y asociaciones
-        repositorio.agregar(
-            Token(
+        obj = Anonimizacion(
                 id_solicitud=str(self.id_solciitud), 
                 id_paciente=str(self.id_paciente), 
-                fecha_actualizacion=self.fecha_actualizacion,
-                token_anonimo=''))
+                token_anonimo='',
+                estado=self.estado,
+                fecha_creacion=self.fecha_actualizacion,
+                fecha_actualizacion=self.fecha_actualizacion)
+        repositorio.agregar( obj )
         
         # TODO ¿Y si la reserva ya existe y debemos actualizarla? Complete el método para hacer merge
 
         # TODO ¿Tal vez podríamos reutilizar la Unidad de Trabajo?
         db.session.commit()
 
-class ProyeccionTokenHandler(ProyeccionHandler):
+class ProyeccionAnonimizacionHandler(ProyeccionHandler):
     
-    def handle(self, proyeccion: ProyeccionToken):
+    def handle(self, proyeccion: ProyeccionAnonimizacion):
 
         # TODO El evento de creación no viene con todos los datos de itinerarios, esto tal vez pueda ser una extensión
         # Asi mismo estamos dejando la funcionalidad de persistencia en el mismo método de recepción. Piense que componente
@@ -82,15 +85,15 @@ class ProyeccionTokenHandler(ProyeccionHandler):
         proyeccion.ejecutar(db=db)
         
 
-@proyeccion.register(ProyeccionTokenLista)
-@proyeccion.register(ProyeccionTokenTotales)
-def ejecutar_proyeccion_token(proyeccion, app=None):
+@proyeccion.register(ProyeccionAnonimizacionLista)
+@proyeccion.register(ProyeccionAnonimizacionTotales)
+def ejecutar_proyeccion_anonimizacion(proyeccion, app=None):
     if not app:
         logging.error('ERROR: Contexto del app no puede ser nulo')
         return
     try:
         with app.app_context():
-            handler = ProyeccionTokenHandler()
+            handler = ProyeccionAnonimizacionHandler()
             handler.handle(proyeccion)
             
     except:

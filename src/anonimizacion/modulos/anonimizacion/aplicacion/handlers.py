@@ -1,15 +1,25 @@
-from anonimizacion.modulos.anonimizacion.dominio.eventos import TokenCreado
+from anonimizacion.modulos.anonimizacion.dominio.eventos import AnonimizacionCreada
 from anonimizacion.seedwork.aplicacion.handlers import Handler
 from anonimizacion.modulos.anonimizacion.infraestructura.despachadores import Despachador
 
-class HandlerTokenIntegracion(Handler):
+class HandlerAnonimizacionIntegracion(Handler):
 
     @staticmethod
-    def handle_token_creado(evento):
+    def handle_anonimizacion_creado(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'anonimizacion-solicitud')
+        despachador.publicar_evento(evento, 'AnonimizacionCreada')
 
     @staticmethod
-    def handle_token_cancelado(evento):
+    def handle_anonimizacion_aprobado(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'anonimizacion-solicitud')
+        despachador.publicar_evento(evento, 'AnonimizacionAprobada')
+        
+    @staticmethod
+    def handle_anonimizacion_fallido(evento):
+        despachador = Despachador()
+        despachador.publicar_evento(evento, 'AnonimizacionFallida')
+
+    @staticmethod
+    def handle_anonimizacion_compensada(evento):
+        despachador = Despachador()
+        despachador.publicar_evento(evento, 'AnonimizacionCompensada')

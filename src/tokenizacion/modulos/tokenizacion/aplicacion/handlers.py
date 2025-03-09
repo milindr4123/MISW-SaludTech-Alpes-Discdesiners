@@ -1,15 +1,25 @@
-from tokenizacion.modulos.tokenizacion.dominio.eventos import TokenCreado
+from tokenizacion.modulos.tokenizacion.dominio.eventos import TokenizacionCreada
 from tokenizacion.seedwork.aplicacion.handlers import Handler
 from tokenizacion.modulos.tokenizacion.infraestructura.despachadores import Despachador
 
-class HandlerTokenIntegracion(Handler):
+class HandlerTokenizacionIntegracion(Handler):
 
     @staticmethod
-    def handle_token_creado(evento):
+    def handle_tokenizacion_creado(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-token')
+        despachador.publicar_evento(evento, 'TokenizacionCreada')
 
     @staticmethod
-    def handle_token_cancelado(evento):
+    def handle_tokenizacion_aprobado(evento):
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-token')
+        despachador.publicar_evento(evento, 'TokenizacionAprobada')
+        
+    @staticmethod
+    def handle_tokenizacion_fallido(evento):
+        despachador = Despachador()
+        despachador.publicar_evento(evento, 'TokenizacionFallida')
+
+    @staticmethod
+    def handle_tokenizacion_compensada(evento):
+        despachador = Despachador()
+        despachador.publicar_evento(evento, 'TokenizacionCompensada')

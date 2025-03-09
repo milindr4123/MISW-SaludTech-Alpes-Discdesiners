@@ -5,12 +5,12 @@ En este archivo usted encontrará reglas de negocio del dominio de tokenización
 """
 
 from tokenizacion.seedwork.dominio.reglas import ReglaNegocio
-from .objetos_valor import Token
+from .objetos_valor import Tokenizacion
 from datetime import datetime
 
 class TokenNoExpirado(ReglaNegocio):
 
-    token: Token
+    token: Tokenizacion
 
     def __init__(self, token, mensaje='El token ha expirado'):
         super().__init__(mensaje)

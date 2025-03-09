@@ -6,14 +6,14 @@ persistir objetos dominio (agregaciones) en la capa de infraestructura del domin
 """
 
 from tokenizacion.config.db import db
-from tokenizacion.modulos.tokenizacion.dominio.repositorios import RepositorioTokens
-from tokenizacion.modulos.tokenizacion.dominio.entidades import Token
+from tokenizacion.modulos.tokenizacion.dominio.repositorios import RepositorioTokenizacion
+from tokenizacion.modulos.tokenizacion.dominio.entidades import Tokenizacion
 from tokenizacion.modulos.tokenizacion.dominio.fabricas import FabricaTokenizacion
-from .dto import Token as TokenDTO
+from .dto import Tokenizacion as TokenizacionDTO
 from .mapeadores import MapeadorToken
 from uuid import UUID
 
-class RepositorioTokensSQLite(RepositorioTokens):
+class RepositorioTokenizacionSQLite(RepositorioTokenizacion):
 
     def __init__(self):
         self._fabrica_tokenizacion: FabricaTokenizacion = FabricaTokenizacion()
@@ -22,26 +22,26 @@ class RepositorioTokensSQLite(RepositorioTokens):
     def fabrica_tokenizacion(self):
         return self._fabrica_tokenizacion
 
-    def obtener_por_id(self, id: UUID) -> Token:
-        token_dto = db.session.query(TokenDTO).filter_by(id=str(id)).one()
-        return self.fabrica_tokenizacion.crear_objeto(token_dto, MapeadorToken())
+    def obtener_por_id(self, id: UUID) -> Tokenizacion:
+        tokenizacion_dto = db.session.query(TokenizacionDTO).filter_by(id=str(id)).one()
+        return self.fabrica_tokenizacion.crear_objeto(tokenizacion_dto, MapeadorToken())
 
-    def obtener_todos(self) -> list[Token]:
-        tokens_dto = db.session.query(TokenDTO).all()
-        return [self.fabrica_tokenizacion.crear_objeto(token_dto, MapeadorToken()) for token_dto in tokens_dto]
+    def obtener_todos(self) -> list[Tokenizacion]:
+        tokens_dto = db.session.query(TokenizacionDTO).all()
+        return [self.fabrica_tokenizacion.crear_objeto(tokenizacion_dto, MapeadorToken()) for tokenizacion_dto in tokens_dto]
 
-    def agregar(self, token: Token):
-        token_dto = self.fabrica_tokenizacion.crear_objeto(token, MapeadorToken())
-        db.session.add(token_dto)
+    def agregar(self, token: Tokenizacion):
+        tokenizacion_dto = self.fabrica_tokenizacion.crear_objeto(token, MapeadorToken())
+        db.session.add(tokenizacion_dto)
         db.session.commit()
 
-    def actualizar(self, token: Token):
-        token_dto = self.fabrica_tokenizacion.crear_objeto(token, MapeadorToken())
-        db.session.merge(token_dto)
+    def actualizar(self, token: Tokenizacion):
+        tokenizacion_dto = self.fabrica_tokenizacion.crear_objeto(token, MapeadorToken())
+        db.session.merge(tokenizacion_dto)
         db.session.commit()
 
     def eliminar(self, token_id: UUID):
-        token_dto = db.session.query(TokenDTO).filter_by(id=str(token_id)).one()
-        db.session.delete(token_dto)
+        tokenizacion_dto = db.session.query(TokenizacionDTO).filter_by(id=str(token_id)).one()
+        db.session.delete(tokenizacion_dto)
         db.session.commit()
 

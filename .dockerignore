@@ -1,0 +1,9 @@
+data/
+data/mysql/
+data/mysql/#innodb_redo
+.venv/
+__pycache__/
+*.log
+*.db
+*.sqlite
+.git/

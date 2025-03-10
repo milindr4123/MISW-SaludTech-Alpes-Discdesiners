@@ -10,5 +10,37 @@ tasks:
       gp sync-done bundle
   - name: Instalar dependencias
     init: gp sync-await bundle
-    command: pip install -r requirements.txt
+    command: pip install -r requirements.txt && pip install -r sidecar-requirements.txt 
+  - name: Crear imagenes Docker
+    init: > 
+      docker build . -f saga.Dockerfile -t saga/flask &&
+      docker build . -f anonimizacion.Dockerfile -t anonimizacion/flask &&
+      docker build . -f tokenizacion.Dockerfile -t tokenizacion/flask &&
+      docker build . -f hsm.Dockerfile -t hsm/flask &&
+      docker build . -f validacion.Dockerfile -t validacion/flask &&
+      gp sync-done images
+  - name: Crear folder para datos, clientes, conectores y asigna permisos
+    init: > 
+      mkdir -p data/bookkeeper && 
+      mkdir -p data/zookeeper && 
+      mkdir -p data/mysql && 
+      mkdir -p data/mysql_logs && 
+      sudo chmod -R 777 ./data &&
+      sudo chmod -R 777 ./connectors
+  - name: Pull el Docker compose
+    init: gp sync-await images
+    command: docker-compose pull
   
+ports:
+  - port: 2181
+    onOpen: ignore
+  - port: 8080
+    onOpen: ignore
+  - port: 6650
+    onOpen: ignore
+  - port: 2181
+    onOpen: ignore
+  - port: 6650
+    onOpen: ignore
+  - port: 5000
+    onOpen: ignore

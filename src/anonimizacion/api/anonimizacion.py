@@ -31,7 +31,7 @@ def crear_token_documento_asincrona():
         # Respuesta más significativa con los datos
         response_data = {
             "status": "success",
-            "message": "Token creado correctamente",
+            "message": "Anonimizacion creada correctamente",
             "data": {
                 "id_solicitud": token_dto.id_solicitud,
                 "id_paciente": token_dto.id_paciente,

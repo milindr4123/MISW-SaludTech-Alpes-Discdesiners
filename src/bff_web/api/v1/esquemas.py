@@ -34,8 +34,52 @@ def obtener_anonimizaciones(root) -> typing.List["Anonimizacion"]:
         )
 
     return anonimizaciones
+def obtener_tokenizacion(root) -> typing.List["Tokenizacion"]:
+    tokenizaciones_json = requests.get(f'http://{SALUDTECH_HOST}:5000/saludtech/tokenizacion').json()
+    tokenizaciones = []
+
+    for tokenizacion in tokenizaciones_json:
+        tokenizaciones.append(
+            Tokenizacion(
+                id=tokenizacion.get('id'),
+                id_paciente=tokenizacion.get('id_paciente'),
+                token_anonimo=tokenizacion.get('token_anonimo'),
+                fecha_creacion=tokenizacion.get('fecha_creacion')
+            )
+        )
+
+    return tokenizaciones
+def obtener_validacion(root) -> typing.List["Tokenizacion"]:
+    tokenizaciones_json = requests.get(f'http://{SALUDTECH_HOST}:5000/saludtech/validacion').json()
+    tokenizaciones = []
+
+    for tokenizacion in tokenizaciones_json:
+        tokenizaciones.append(
+            Tokenizacion(
+                id=tokenizacion.get('id'),
+                id_paciente=tokenizacion.get('id_paciente'),
+                token_anonimo=tokenizacion.get('token_anonimo'),
+                fecha_creacion=tokenizacion.get('fecha_creacion')
+            )
+        )
+
+    return tokenizaciones
 
 
+def obtener_hsm(root) -> typing.List["hsm"]:
+    hsm_json = requests.get(f'http://{SALUDTECH_HOST}:5000/saludtech/hsm').json()
+    hsms = []
+
+    for hsm in hsm_json:
+        hsms.append(
+            hsm(
+                id=hsm.get('id'),
+                leght=hsm.get('lenght'),
+                formato=hsm.get('formato')
+            )
+        )
+
+    return hsms
 @strawberry.type
 class DatosSensibles:
     nombre: str
@@ -58,3 +102,16 @@ class Anonimizacion:
     tipo_informacion: TipoInformacion
     imagen: str
     timestamp: datetime
+
+
+@strawberry.type
+class Tokenizacion:
+    id: str
+    id_paciente: str
+    token_anonimo: str
+    fecha_creacion: str
+@strawberry.type
+class hsm:
+    id: str
+    leght: int
+    formato: str

@@ -21,6 +21,7 @@ tasks:
       gp sync-done images
   - name: Crear folder para datos, clientes, conectores y asigna permisos
     init: > 
+      mkdir -p connectors &&
       mkdir -p data/bookkeeper && 
       mkdir -p data/zookeeper && 
       mkdir -p data/mysql && 
